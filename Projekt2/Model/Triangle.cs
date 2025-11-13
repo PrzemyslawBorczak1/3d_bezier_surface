@@ -62,7 +62,7 @@ namespace Projekt2
 
 
             List<Edge> AET = new();
-
+            
             for (int i = 0; i < dy; i++)
             {
 
@@ -71,30 +71,19 @@ namespace Projekt2
                     var current = ET[i].First;
                     while (current != null)
                     {
-                        //AET.Add(current.Value);
-                        AET.Add(current.Value);
-                        AET.Sort((e1, e2) => e1.X.CompareTo(e2.X));
-                        //AET = InsertEdge(current.Value,new LinkedList<Edge>(AET)).ToList();
+                        InsertEdge(current.Value, AET);
                         current = current.Next;
                     }
                 }
 
-                for (int ct = 0; ct < AET.Count; ct++)
-                {
-                    if (AET[ct].Ymax <= minY + i)
-                    {
-                        AET.RemoveAt(ct);
-                        ct--;
-                        continue;
-                    }
-                }
+                AET.RemoveAll(edge => edge.Ymax <= minY + i);
 
-
-                for (int ct = 0; ct < AET.Count / 2; ct++)
+               
+                for (int ct = 0; ct < AET.Count; ct += 2)
                 {
-                    g.DrawLine(Pens.Red, (int)AET[2 * ct].X, minY + i, (int)AET[2 * ct + 1].X, minY + i);
-                    AET[2 * ct].X += AET[2 * ct].M;
-                    AET[2 * ct + 1].X += AET[2 * ct + 1].M;
+                    DrawLine(g, (int)AET[ct].X, (int)AET[ct + 1].X, minY + i);
+                    AET[ct].X += AET[ct].M;
+                    AET[ct + 1].X += AET[ct + 1].M;
                 }
 
             }
@@ -102,14 +91,24 @@ namespace Projekt2
 
         }
 
+        // nie ma sensu dla trojaktow ale wyglada fajnie
+        private void InsertEdge(Edge edge, List<Edge> list)
+        {
+            int index = list.BinarySearch(edge, Comparer<Edge>.Create((e1, e2) => e1.X.CompareTo(e2.X)));
+            if (index < 0)
+            {
+                index = ~index;
+            }
+            list.Insert(index, edge);
+        }
 
-        private LinkedList<Edge> InsertEdge(Edge edge, LinkedList<Edge> list)
+        private void InsertEdge(Edge edge, LinkedList<Edge> list)
         {
           
             if (list.Count == 0)
             {
                 list.AddFirst(edge);
-                return list;
+                return;
             }
 
             var current = list.First;
@@ -128,9 +127,14 @@ namespace Projekt2
             }
 
 
-            return list;
+            return;
         }
 
+        private void DrawLine(Graphics g, int x1, int x2, int Y)
+        {
+            g.DrawLine(Pens.Blue, x1, Y, x2, Y);
+
+        }
 
     }
 }
