@@ -53,6 +53,7 @@
             // 
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Margin = new Padding(5, 6, 5, 6);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -71,34 +72,37 @@
             splitContainer1.Panel2.Controls.Add(label1);
             splitContainer1.Panel2.Controls.Add(loadButton);
             splitContainer1.Panel2.Controls.Add(alfaBar);
-            splitContainer1.Size = new Size(1018, 544);
-            splitContainer1.SplitterDistance = 706;
+            splitContainer1.Size = new Size(1745, 1088);
+            splitContainer1.SplitterDistance = 1210;
+            splitContainer1.SplitterWidth = 7;
             splitContainer1.TabIndex = 0;
             // 
             // surfaceCanvas1
             // 
             surfaceCanvas1.Dock = DockStyle.Fill;
             surfaceCanvas1.Location = new Point(0, 0);
+            surfaceCanvas1.Margin = new Padding(9, 12, 9, 12);
             surfaceCanvas1.Name = "surfaceCanvas1";
-            surfaceCanvas1.Size = new Size(706, 544);
+            surfaceCanvas1.Size = new Size(1210, 1088);
             surfaceCanvas1.TabIndex = 0;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(22, 432);
+            label4.Location = new Point(38, 864);
+            label4.Margin = new Padding(5, 0, 5, 0);
             label4.Name = "label4";
-            label4.Size = new Size(13, 15);
+            label4.Size = new Size(23, 30);
             label4.TabIndex = 8;
             label4.Text = "v";
             // 
             // vBar
             // 
-            vBar.Location = new Point(17, 449);
-            vBar.Maximum = 100;
-            vBar.Minimum = 4;
+            vBar.Location = new Point(29, 898);
+            vBar.Margin = new Padding(5, 6, 5, 6);
+            vBar.Minimum = 2;
             vBar.Name = "vBar";
-            vBar.Size = new Size(279, 45);
+            vBar.Size = new Size(478, 80);
             vBar.TabIndex = 7;
             vBar.TickFrequency = 2;
             vBar.Value = 4;
@@ -107,19 +111,20 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(17, 368);
+            label3.Location = new Point(29, 736);
+            label3.Margin = new Padding(5, 0, 5, 0);
             label3.Name = "label3";
-            label3.Size = new Size(14, 15);
+            label3.Size = new Size(25, 30);
             label3.TabIndex = 6;
             label3.Text = "u";
             // 
             // uBar
             // 
-            uBar.Location = new Point(13, 386);
-            uBar.Maximum = 100;
-            uBar.Minimum = 4;
+            uBar.Location = new Point(22, 772);
+            uBar.Margin = new Padding(5, 6, 5, 6);
+            uBar.Minimum = 2;
             uBar.Name = "uBar";
-            uBar.Size = new Size(295, 45);
+            uBar.Size = new Size(506, 80);
             uBar.TabIndex = 5;
             uBar.TickFrequency = 2;
             uBar.Value = 5;
@@ -128,19 +133,21 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(13, 238);
+            label2.Location = new Point(22, 476);
+            label2.Margin = new Padding(5, 0, 5, 0);
             label2.Name = "label2";
-            label2.Size = new Size(30, 15);
+            label2.Size = new Size(54, 30);
             label2.TabIndex = 4;
             label2.Text = "beta";
             // 
             // betaBar
             // 
-            betaBar.Location = new Point(13, 256);
+            betaBar.Location = new Point(22, 512);
+            betaBar.Margin = new Padding(5, 6, 5, 6);
             betaBar.Maximum = 100;
             betaBar.Minimum = 2;
             betaBar.Name = "betaBar";
-            betaBar.Size = new Size(295, 45);
+            betaBar.Size = new Size(506, 80);
             betaBar.TabIndex = 3;
             betaBar.TickFrequency = 5;
             betaBar.Value = 2;
@@ -149,17 +156,19 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(17, 133);
+            label1.Location = new Point(29, 266);
+            label1.Margin = new Padding(5, 0, 5, 0);
             label1.Name = "label1";
-            label1.Size = new Size(26, 15);
+            label1.Size = new Size(47, 30);
             label1.TabIndex = 2;
             label1.Text = "alfa";
             // 
             // loadButton
             // 
-            loadButton.Location = new Point(27, 27);
+            loadButton.Location = new Point(46, 54);
+            loadButton.Margin = new Padding(5, 6, 5, 6);
             loadButton.Name = "loadButton";
-            loadButton.Size = new Size(75, 23);
+            loadButton.Size = new Size(129, 46);
             loadButton.TabIndex = 1;
             loadButton.Text = "Load";
             loadButton.UseVisualStyleBackColor = true;
@@ -167,11 +176,12 @@
             // 
             // alfaBar
             // 
-            alfaBar.Location = new Point(13, 151);
+            alfaBar.Location = new Point(22, 302);
+            alfaBar.Margin = new Padding(5, 6, 5, 6);
             alfaBar.Maximum = 90;
             alfaBar.Minimum = 2;
             alfaBar.Name = "alfaBar";
-            alfaBar.Size = new Size(308, 45);
+            alfaBar.Size = new Size(528, 80);
             alfaBar.TabIndex = 0;
             alfaBar.TickFrequency = 5;
             alfaBar.Value = 2;
@@ -179,10 +189,11 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1018, 544);
+            ClientSize = new Size(1745, 1088);
             Controls.Add(splitContainer1);
+            Margin = new Padding(5, 6, 5, 6);
             Name = "Form1";
             Text = "Form1";
             splitContainer1.Panel1.ResumeLayout(false);

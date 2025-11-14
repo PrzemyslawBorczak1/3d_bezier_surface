@@ -14,6 +14,15 @@ namespace Projekt2
 
         List<Edge> edges = new List<Edge>();
 
+        public int minY;
+        int maxY;
+        public int dy;
+
+        public int minX;
+        int maxX;
+        public int dx;
+
+
         public Triangle(Vertex a, Vertex b, Vertex c)
         {
             vertices.Add(a);
@@ -23,6 +32,15 @@ namespace Projekt2
             edges.Add(new Edge(a, b));
             edges.Add(new Edge(a, c));
             edges.Add(new Edge(b, c));
+
+            // ograniczenia dla bitmap i potem do algorytmu
+            minY = (int)Math.Min(Math.Min(vertices[0].Cord.Y, vertices[1].Cord.Y), vertices[2].Cord.Y);
+            maxY = (int)Math.Max(Math.Max(vertices[0].Cord.Y, vertices[1].Cord.Y), vertices[2].Cord.Y);
+            dy = maxY - minY + 1;
+
+            minX = (int)Math.Min(Math.Min(vertices[0].Cord.X, vertices[1].Cord.X), vertices[2].Cord.X);
+            maxX = (int)Math.Max(Math.Max(vertices[0].Cord.X, vertices[1].Cord.X), vertices[2].Cord.X);
+            dx = maxX - minX + 1;
         }
 
         public void Draw(Graphics g)
@@ -35,16 +53,8 @@ namespace Projekt2
         }
 
         // bucket sort :((
-        public void DrawSolidColor(Graphics g)
+        public void Draw(Bitmap b, Action<Bitmap, int, int, int>DrawLine)
         {
-
-            // oplaca sie ograniczyc rozmiar ET skoro wiemy ze sa 3 wartosci 
-            // gdyby mial byc przyapadek ogolny konieczne byloby podanie wielkosci ET
-
-            int minY = (int)Math.Min(Math.Min(vertices[0].Cord.Y, vertices[1].Cord.Y), vertices[2].Cord.Y);
-            int maxY = (int)Math.Max(Math.Max(vertices[0].Cord.Y, vertices[1].Cord.Y), vertices[2].Cord.Y);
-            int dy = maxY - minY + 1;
-
 
             LinkedList<Edge>[] ET = new LinkedList<Edge>[dy];
 
@@ -62,7 +72,7 @@ namespace Projekt2
 
 
             List<Edge> AET = new();
-            
+
             for (int i = 0; i < dy; i++)
             {
 
@@ -78,10 +88,10 @@ namespace Projekt2
 
                 AET.RemoveAll(edge => edge.Ymax <= minY + i);
 
-               
+
                 for (int ct = 0; ct < AET.Count; ct += 2)
                 {
-                    DrawLine(g, (int)AET[ct].X, (int)AET[ct + 1].X, minY + i);
+                    DrawLine(b, (int)AET[ct].X - minX, (int)AET[ct + 1].X - minX, i);
                     AET[ct].X += AET[ct].M;
                     AET[ct + 1].X += AET[ct + 1].M;
                 }
@@ -104,7 +114,7 @@ namespace Projekt2
 
         private void InsertEdge(Edge edge, LinkedList<Edge> list)
         {
-          
+
             if (list.Count == 0)
             {
                 list.AddFirst(edge);
@@ -130,10 +140,51 @@ namespace Projekt2
             return;
         }
 
-        private void DrawLine(Graphics g, int x1, int x2, int Y)
-        {
-            g.DrawLine(Pens.Blue, x1, Y, x2, Y);
 
+
+
+
+
+
+
+        private void DrawLineSolid(Bitmap b, int x1, int x2, int y)
+        {
+
+
+            if (x1 > x2)
+            {
+                (x1, x2) = (x2, x1);
+            }
+            
+
+            for (int x = x1; x <= x2; x++)
+            {
+                if (x >= 0 && x < b.Width && y >= 0 && y < b.Height)
+                {
+                    b.SetPixel(x, y, Color.Blue);
+                }
+            }
+
+        }
+
+        public void DrawSolidColor(Bitmap b)
+        {
+            Draw(b, DrawLineSolid);
+        }
+
+
+
+        public void DrawWithShadow(Bitmap b)
+        {
+
+
+        }
+        public void PutPixel(Bitmap b, int x, int y)
+        {
+            if (x >= 0 && x < b.Width && y >= 0 && y < b.Height)
+            {
+                b.SetPixel(x, y, Color.Red);
+            }
         }
 
     }
