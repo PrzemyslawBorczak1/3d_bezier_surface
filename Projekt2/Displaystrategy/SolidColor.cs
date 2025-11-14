@@ -24,77 +24,53 @@ namespace Projekt2
 
         public void Draw(Surface surface, Graphics g)
         {
-            List<(Bitmap, (int,int))> bitmaps = new List<(Bitmap, (int,int))>();
+            var surfaceBounds = surface.GetBounds();
+
+            MyBitmap myBitmap = new MyBitmap(surfaceBounds);
 
 
-            Parallel.For(0, surface.Triangles.Count, i =>
+            // TODO parallel
+            //Parallel.For(0, surface.Triangles.Count, i =>
+            //{
+            //    var tr = surface.Triangles[i];
+            //    tr.DrawSolidColor(myBitmap);
+            //});
+
+
+
+            foreach (var tr in surface.Triangles)
             {
-                var tr = surface.Triangles[i];
-                Bitmap triBmp = new Bitmap(tr.dx, tr.dy);
-                tr.DrawSolidColor(triBmp);
-                lock (bitmaps)
-                {
-                    bitmaps.Add((triBmp, (tr.minX, tr.minY)));
-                }
-            });
-
-            Parallel.For(0, surface.Triangles.Count, i =>
-            {
-                var tr = surface.Triangles[(int)i];
-                tr.DrawSolidColor(bitmaps[i].Item1);
-            });
-
-
-
-            Bitmap final = new Bitmap(1600, 1600);
-
-            foreach (var bmp in bitmaps)
-            {
-                Blit(bmp.Item1, final, 800 + bmp.Item2.Item1, 800 + bmp.Item2.Item2);
-                //g.DrawImage(bmp, 0, 0);
+                tr.DrawSolidColor(myBitmap);
             }
-           g.DrawImage(final, -800, -800);
+            //surface.Triangles[0].DrawSolidColor(myBitmap);
+
+            //surface.Triangles[2].DrawSolidColor(myBitmap);
+            //surface.Triangles[4].DrawSolidColor(myBitmap);
+
+            //surface.Triangles[1].DrawSolidColor(myBitmap);
+
+
+            Bitmap final = Blit(myBitmap.pixels, surfaceBounds.Width, surfaceBounds.Height);
+            g.DrawImage(final, surfaceBounds.X, surfaceBounds.Y);
 
         }
 
-        public static void Blit(Bitmap src, Bitmap dst, int x, int y)
+
+        // TODO add marshal
+        public Bitmap Blit(Color[] src, int width, int height)
         {
-            int width = Math.Min(src.Width, dst.Width - x);
-            int height = Math.Min(src.Height, dst.Height - y);
+            Bitmap bitmap = new Bitmap(width, height);
 
-            if (width <= 0 || height <= 0)
+            for (int y = 0; y < height; y++)
             {
-                return;
-            }
-
-            var srcRect = new Rectangle(0, 0, width, height);
-            var dstRect = new Rectangle(x, y, width, height);
-
-            var srcData = src.LockBits(srcRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var dstData = dst.LockBits(dstRect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-            try
-            {
-                int bytesPerPixel = 4; 
-                int srcStride = srcData.Stride;
-                int dstStride = dstData.Stride;
-
-                byte[] rowBuffer = new byte[width * bytesPerPixel];
-
-                for (int row = 0; row < height; row++)
+                for (int x = 0; x < width; x++)
                 {
-                    IntPtr srcRowPtr = srcData.Scan0 + row * srcStride;
-                    Marshal.Copy(srcRowPtr, rowBuffer, 0, rowBuffer.Length);
-
-                    IntPtr dstRowPtr = dstData.Scan0 + row * dstStride;
-                    Marshal.Copy(rowBuffer, 0, dstRowPtr, rowBuffer.Length);
+                    int index = x + y * width;
+                    bitmap.SetPixel(x, y, src[index]);
                 }
             }
-            finally
-            {
-                src.UnlockBits(srcData);
-                dst.UnlockBits(dstData);
-            }
+
+            return bitmap;
         }
 
         public void DrawWithShadow(Surface surface, Graphics g)
@@ -105,6 +81,47 @@ namespace Projekt2
                 var tr = surface.Triangles[i];
                 tr.DrawWithShadow(bmp);
             });
+        }
+
+
+     /*   public static void DrawSolidColor(this Triangle triangle, Bitmap b)
+        {
+            triangle.Draw(b, triangle.DrawLineSolid);
+        }
+*/
+    }
+
+
+    public class MyBitmap
+    {
+        int minX;
+        int minY;
+        int dx;
+        int dy;
+
+        public Color[] pixels;
+        object locker = new();
+
+        public MyBitmap(Rectangle r)
+        {
+            minX = r.X;
+            minY = r.Y;
+            dx = r.Width;
+            dy = r.Height;
+
+
+            pixels = new Color[dx * dy];
+            //locks = new object[dx * dy];
+        }
+
+        // to do lock on every set
+        public void SetPixel(int x, int y, Color color)
+        {
+            int index = (x - minX)  + (y - minY) * dx;
+            lock (locker)
+            {
+                pixels[index] = color;
+            }
         }
     }
 }

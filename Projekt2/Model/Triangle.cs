@@ -53,7 +53,7 @@ namespace Projekt2
         }
 
         // bucket sort :((
-        public void Draw(Bitmap b, Action<Bitmap, int, int, int>DrawLine)
+        public void Draw(MyBitmap myBitmap,  Action<MyBitmap, int, int, int>DrawLine)
         {
 
             LinkedList<Edge>[] ET = new LinkedList<Edge>[dy];
@@ -91,7 +91,7 @@ namespace Projekt2
 
                 for (int ct = 0; ct < AET.Count; ct += 2)
                 {
-                    DrawLine(b, (int)AET[ct].X - minX, (int)AET[ct + 1].X - minX, i);
+                    DrawLine(myBitmap,(int)AET[ct].X, (int)AET[ct + 1].X,  i     + minY);
                     AET[ct].X += AET[ct].M;
                     AET[ct + 1].X += AET[ct + 1].M;
                 }
@@ -147,7 +147,7 @@ namespace Projekt2
 
 
 
-        private void DrawLineSolid(Bitmap b, int x1, int x2, int y)
+        private void DrawLineSolid(MyBitmap myBitmap, int x1, int x2, int y)
         {
 
 
@@ -159,17 +159,14 @@ namespace Projekt2
 
             for (int x = x1; x <= x2; x++)
             {
-                if (x >= 0 && x < b.Width && y >= 0 && y < b.Height)
-                {
-                    b.SetPixel(x, y, Color.Blue);
-                }
+                myBitmap.SetPixel(x, y, Color.Magenta);
             }
 
         }
 
-        public void DrawSolidColor(Bitmap b)
+        public void DrawSolidColor(MyBitmap myBitmap)
         {
-            Draw(b, DrawLineSolid);
+            Draw(myBitmap, DrawLineSolid);
         }
 
 

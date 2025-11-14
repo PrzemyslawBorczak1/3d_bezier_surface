@@ -21,9 +21,9 @@ namespace Projekt2
 
 
         public List<Vector3> BezierPoints = new();
-        
-        public List<Vertex> Vertices = new ();
-        public List<Triangle> Triangles = new ();
+
+        public List<Vertex> Vertices = new();
+        public List<Triangle> Triangles = new();
 
 
 
@@ -34,7 +34,14 @@ namespace Projekt2
             Height = height;
         }
 
+        public Rectangle GetBounds()
+        {
+            int minX = CalculetedPoints.Min(p => (int)p.X);
+            int minY = CalculetedPoints.Min(p => (int)p.Y);
+            int maxX = CalculetedPoints.Max(p => (int)p.X);
+            int maxY = CalculetedPoints.Max(p => (int)p.Y);
 
- 
+            return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+        }
     }
 }
