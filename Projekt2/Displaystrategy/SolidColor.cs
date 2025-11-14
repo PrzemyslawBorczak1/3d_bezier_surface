@@ -30,18 +30,18 @@ namespace Projekt2
 
 
             // TODO parallel
-            //Parallel.For(0, surface.Triangles.Count, i =>
-            //{
-            //    var tr = surface.Triangles[i];
-            //    tr.DrawSolidColor(myBitmap);
-            //});
-
-
-
-            foreach (var tr in surface.Triangles)
+            Parallel.For(0, surface.Triangles.Count, i =>
             {
+                var tr = surface.Triangles[i];
                 tr.DrawSolidColor(myBitmap);
-            }
+            });
+
+
+
+            //foreach (var tr in surface.Triangles)
+            //{
+            //    tr.DrawSolidColor(myBitmap);
+            //}
             //surface.Triangles[0].DrawSolidColor(myBitmap);
 
             //surface.Triangles[2].DrawSolidColor(myBitmap);
@@ -59,15 +59,32 @@ namespace Projekt2
         // TODO add marshal
         public Bitmap Blit(Color[] src, int width, int height)
         {
-            Bitmap bitmap = new Bitmap(width, height);
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
-            for (int y = 0; y < height; y++)
+            var rect = new Rectangle(0, 0, width, height);
+            var bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            try
             {
-                for (int x = 0; x < width; x++)
+                IntPtr ptr = bitmapData.Scan0;
+
+                int bytesPerPixel = 4; 
+                byte[] pixelData = new byte[width * height * bytesPerPixel];
+
+                for (int i = 0; i < src.Length; i++)
                 {
-                    int index = x + y * width;
-                    bitmap.SetPixel(x, y, src[index]);
+                    int offset = i * bytesPerPixel;
+                    pixelData[offset] = src[i].B;     
+                    pixelData[offset + 1] = src[i].G; 
+                    pixelData[offset + 2] = src[i].R; 
+                    pixelData[offset + 3] = src[i].A; 
                 }
+
+                Marshal.Copy(pixelData, 0, ptr, pixelData.Length);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
             }
 
             return bitmap;
@@ -100,7 +117,7 @@ namespace Projekt2
         int dy;
 
         public Color[] pixels;
-        object locker = new();
+        static object[] locks;
 
         public MyBitmap(Rectangle r)
         {
@@ -110,15 +127,21 @@ namespace Projekt2
             dy = r.Height;
 
 
-            pixels = new Color[dx * dy];
-            //locks = new object[dx * dy];
+            int amount = dx * dy;
+            pixels = new Color[amount];
+            locks = new object[amount];
+            for (int i = 0; i < amount; i++)
+            {
+                locks[i] = new object();
+            }
         }
+
 
         // to do lock on every set
         public void SetPixel(int x, int y, Color color)
         {
             int index = (x - minX)  + (y - minY) * dx;
-            lock (locker)
+            lock (locks[index])
             {
                 pixels[index] = color;
             }
