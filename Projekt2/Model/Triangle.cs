@@ -6,6 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+
+using System.Numerics;
+
 namespace Projekt2
 {
     public class Triangle
@@ -43,7 +46,7 @@ namespace Projekt2
             dx = maxX - minX + 1;
         }
 
-        public void Draw(Graphics g)
+        public void DrawEdges(Graphics g)
         {
             foreach (var edge in edges)
             {
@@ -51,9 +54,14 @@ namespace Projekt2
             }
 
         }
+        public void DrawSolidColor(MyBitmap myBitmap) => Fill(myBitmap, DrawLineSolid);
+        public void DrawWithShadow(MyBitmap myBitmap) => Fill(myBitmap, ShadesLine);
+
+
+
 
         // bucket sort :((
-        public void Draw(MyBitmap myBitmap,  Action<MyBitmap, int, int, int>DrawLine)
+        private void Fill(MyBitmap myBitmap,  Action<MyBitmap, int, int, int>DrawLine)
         {
 
             LinkedList<Edge>[] ET = new LinkedList<Edge>[dy];
@@ -142,11 +150,6 @@ namespace Projekt2
 
 
 
-
-
-
-
-
         private void DrawLineSolid(MyBitmap myBitmap, int x1, int x2, int y)
         {
 
@@ -164,24 +167,69 @@ namespace Projekt2
 
         }
 
-        public void DrawSolidColor(MyBitmap myBitmap)
+        private void ShadesLine(MyBitmap myBitmap, int x1, int x2, int y)
         {
-            Draw(myBitmap, DrawLineSolid);
-        }
-
-
-
-        public void DrawWithShadow(Bitmap b)
-        {
-
-
-        }
-        public void PutPixel(Bitmap b, int x, int y)
-        {
-            if (x >= 0 && x < b.Width && y >= 0 && y < b.Height)
+            if (x1 > x2)
             {
-                b.SetPixel(x, y, Color.Red);
+                (x1, x2) = (x2, x1);
             }
+
+
+            for (int x = x1; x <= x2; x++)
+           {
+                PutPixelWithShade(myBitmap, x, y);
+           }
+
+        }
+        private void PutPixelWithShade(MyBitmap myBitmap, int x, int y)
+        {
+            // TODO wyliczanie tego
+            Vector3 Il = new(1.0f, 1.0f, .1f);
+            Vector3 Io = new(.0f, .1f, 1f);
+            Vector3 LightSource = new(0, 0, 50000);
+            float kd = 0.01f;
+            float ks = 0.05f;
+            int m = 4;
+
+
+
+            Func<Vector3, Vector3, Vector3, float> Area = (a, b, c) =>
+            {
+                return 0.5f * Vector3.Cross(b - a, c - a).Length();
+            };
+
+            float totalArea = Area(vertices[0].Cord, vertices[1].Cord, vertices[2].Cord);
+
+            var p = new Vector3(x, y, 0);
+            float alfa = Area(vertices[0].Cord, vertices[1].Cord, p);
+            float beta = Area(vertices[0].Cord, vertices[2].Cord, p);
+            float gamma = Area(vertices[1].Cord, vertices[2].Cord, p);
+
+
+            var N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal) / totalArea;
+            N = Vector3.Normalize(N);
+
+
+            Vector3 L = Vector3.Normalize(LightSource - p);
+            float cosNL = Vector3.Dot(N, L);
+            var I = kd * Il * Io * cosNL;
+
+            Vector3 V = new(0,0,1);
+            Vector3 R = 2 * Vector3.Dot(N,L) * (N - L);
+
+            float cosVR = Vector3.Dot(V, R);
+            I += ks * Il * Io * (float)Math.Pow(cosVR, m);
+
+            // TODO change so 0 will color
+            I.X = I.X < 0 ? 0 : I.X;
+            I.Y = I.Y < 0 ? 0 : I.Y;
+            I.Z = I.Z < 0 ? 0 : I.Z;
+
+            myBitmap.SetPixel(x, y, Color.FromArgb(
+                Math.Min((int)(I.X * 255), 255),
+                Math.Min((int)(I.Y * 255), 255),
+                Math.Min((int)(I.Z * 255), 255)
+                ));
         }
 
     }

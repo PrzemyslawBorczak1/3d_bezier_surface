@@ -29,12 +29,12 @@ namespace Projekt2
             
             foreach (var triangle in surface.Triangles)
             {
-                triangle.Draw(g);
+                triangle.DrawEdges(g);
             }
-            foreach (var ver in surface.Vertices)
-            {
-                g.DrawLine(Pens.Black, ver.Cord.X, ver.Cord.Y, ver.Cord.X + ver.Normal.X, ver.Cord.Y + ver.Normal.Y);
-            }
+            //foreach (var ver in surface.Vertices)
+            //{
+            //    g.DrawLine(Pens.Black, ver.Cord.X, ver.Cord.Y, ver.Cord.X + ver.Normal.X, ver.Cord.Y + ver.Normal.Y);
+            //}
         }
 
     }

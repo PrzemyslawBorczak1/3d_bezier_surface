@@ -15,7 +15,7 @@ namespace Projekt2
 
     public static class DisplayStrategy
     {
-        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { SolidColor.GetInstance(), TriangleNet.GetInstance()};
+        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> {  TriangleNet.GetInstance(), Shadow.GetInstance()};
 
 
 
@@ -29,6 +29,9 @@ namespace Projekt2
 
         public static void DrawAll(Surface surface, Graphics g)
         {
+            // TODO
+            g.Clear(Color.LightBlue);
+
             Updater.UpdateSurface(surface);
             foreach (var strategy in strategies)
             {

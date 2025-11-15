@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,21 +8,23 @@ using System.Threading.Tasks;
 
 namespace Projekt2
 {
-    public class SolidColor : IDisplayStrategy
+    public class Shadow : IDisplayStrategy
     {
-        static SolidColor? instance = null;
-        private SolidColor() { }
-        public static SolidColor GetInstance()
+        static Shadow? instance = null;
+        private Shadow() { }
+        public static Shadow GetInstance()
         {
             if (instance == null)
             {
-                instance = new SolidColor();
+                instance = new Shadow();
             }
             return instance;
         }
 
         public void Draw(Surface surface, Graphics g)
         {
+
+
             var surfaceBounds = surface.GetBounds();
 
             MyBitmap myBitmap = new MyBitmap(surfaceBounds);
@@ -32,28 +33,19 @@ namespace Projekt2
             Parallel.For(0, surface.Triangles.Count, i =>
             {
                 var tr = surface.Triangles[i];
-                tr.DrawSolidColor(myBitmap);
+                tr.DrawWithShadow(myBitmap);
             });
+            //TODO parallel
+            //var tr = surface.Triangles[0];
+            //tr.DrawWithShadow(myBitmap);
 
-
-
-            //foreach (var tr in surface.Triangles)
-            //{
-            //    tr.DrawSolidColor(myBitmap);
-            //}
-            //surface.Triangles[0].DrawSolidColor(myBitmap);
-
-            //surface.Triangles[2].DrawSolidColor(myBitmap);
-            //surface.Triangles[4].DrawSolidColor(myBitmap);
-
-            //surface.Triangles[1].DrawSolidColor(myBitmap);
-
+            //tr = surface.Triangles[1];
+            //tr.DrawWithShadow(myBitmap);
 
             Bitmap final = Blit(myBitmap.pixels, surfaceBounds.Width, surfaceBounds.Height);
             g.DrawImage(final, surfaceBounds.X, surfaceBounds.Y);
 
         }
-
 
         public Bitmap Blit(Color[] src, int width, int height)
         {
@@ -89,13 +81,5 @@ namespace Projekt2
         }
 
 
-
-        /*   public static void DrawSolidColor(this Triangle triangle, Bitmap b)
-           {
-               triangle.Draw(b, triangle.DrawLineSolid);
-           }
-   */
     }
-
-
 }
