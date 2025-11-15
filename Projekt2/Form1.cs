@@ -204,14 +204,8 @@ namespace Projekt2
         }
 
 
-
+        // TODO merge those next 2 meyhods
         private void loadTextureButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void mapButton_Click(object sender, EventArgs e)
         {
             if (surfaceCanvas1.surface == null)
             {
@@ -219,9 +213,6 @@ namespace Projekt2
                 return;
             }
 
-            Rectangle r = surfaceCanvas1.surface.GetBounds();
-            var w = r.Width;
-            var h = r.Height;
 
             using var dlg = new OpenFileDialog();
             dlg.Title = "Select a file";
@@ -238,8 +229,49 @@ namespace Projekt2
                     using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                     using var srcImage = Image.FromStream(fs);
 
-                    // Keep the original image size — do not stretch/resample to surface size.
-                    // Create a Bitmap copy from the loaded image and use that as the texture.
+                    var bmp = new Bitmap(srcImage);
+
+                    var oldDisplayImage = textureDisplay.BackgroundImage;
+                    textureDisplay.BackgroundImage = new Bitmap(bmp);
+                    textureDisplay.BackgroundImageLayout = ImageLayout.Zoom;
+                    oldDisplayImage?.Dispose();
+
+                    surfaceCanvas1.SetTexture(bmp);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, $"Unable to load image: {ex.Message}", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
+
+
+        private void mapButton_Click(object sender, EventArgs e)
+        {
+            if (surfaceCanvas1.surface == null)
+            {
+                MessageBox.Show(this, "Load control points first.", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            using var dlg = new OpenFileDialog();
+            dlg.Title = "Select a file";
+            dlg.Filter = "PNG images (*.png)|*.png";
+            dlg.FilterIndex = 1;
+            dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            dlg.Multiselect = false;
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                string path = dlg.FileName;
+                try
+                {
+                    using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    using var srcImage = Image.FromStream(fs);
+
                     var bmp = new Bitmap(srcImage);
 
                     var oldDisplayImage = mapDisplay.BackgroundImage;
@@ -247,7 +279,6 @@ namespace Projekt2
                     mapDisplay.BackgroundImageLayout = ImageLayout.Zoom;
                     oldDisplayImage?.Dispose();
 
-                    // Give the bitmap to the canvas (surfaceCanvas1 should own/dispose it later if needed).
                     surfaceCanvas1.SetMap(bmp);
                 }
                 catch (Exception ex)
@@ -259,7 +290,13 @@ namespace Projekt2
 
         private void useMapButton_CheckedChanged(object sender, EventArgs e)
         {
-           surfaceCanvas1.UseMap(useMapButton.Checked);
+            surfaceCanvas1.UseMap(useMapButton.Checked);
+        }
+
+        private void useTextureButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+            surfaceCanvas1.UseTexture(useTextureButton.Checked);
         }
     }
 }

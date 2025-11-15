@@ -229,14 +229,28 @@ namespace Projekt2
 
             var N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal);
             N = Vector3.Normalize(N);
-            if(surface.Map != null && surface.UseMap)
+            double u = (alfa * vertices[2].U + beta * vertices[1].U + gamma * vertices[0].U);
+            double v = (alfa * vertices[2].V + beta * vertices[1].V + gamma * vertices[0].V);
+            u = Math.Clamp(u, 0f, 1f);
+            v = Math.Clamp(v, 0f, 1f);
+
+            if (surface.UseTexture && surface.Texture != null)
             {
-                double u = (alfa * vertices[2].U + beta * vertices[1].U + gamma * vertices[0].U);
-                double v = (alfa * vertices[2].V + beta * vertices[1].V + gamma * vertices[0].V);
+                var texture = surface.Texture;
+                int ix = Math.Clamp((int)(u * texture.Width), 0, texture.Width - 1);
+                int iy = Math.Clamp((int)(v * texture.Height), 0, texture.Height - 1);
+                var color = texture.GetPixel(ix, iy);
+                Vector3 IoT = new Vector3(
+                    color.R / 255.0f,
+                    color.G / 255.0f,
+                    color.B / 255.0f);
+                Io = IoT;
+            }
+            /// TODO mayby merge those 2 ifs
 
-                u = Math.Clamp(u, 0f, 1f);
-                v = Math.Clamp(v, 0f, 1f);
 
+            if (surface.Map != null && surface.UseMap)
+            {
                 var map = surface.Map;
 
                 int ix = Math.Clamp((int)(u * map.Width), 0, map.Width - 1);

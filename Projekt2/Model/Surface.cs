@@ -35,6 +35,9 @@ namespace Projekt2
 
         public bool UseMap { get; set; } = false;
 
+        public Bitmap? Texture { get; set; } = null;
+        public bool UseTexture { get; set; } = false;
+
 
 
         public void SetControlPoints(List<Vector3> points, int width, int height)

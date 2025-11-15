@@ -186,5 +186,22 @@ namespace Projekt2
             surface.UseMap = use;
             Invalidate();
         }
+
+        public void SetTexture(Bitmap bitmap)
+        {
+            if (surface == null)
+                return;
+
+            surface.Texture = bitmap;
+            Invalidate();
+        }
+
+        public void UseTexture(bool use)
+        {
+            if (surface == null)
+                return;
+            surface.UseTexture = use;
+            Invalidate();
+        }
     }
 }

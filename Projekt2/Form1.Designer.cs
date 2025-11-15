@@ -33,7 +33,7 @@
             radioButton4 = new RadioButton();
             useMapButton = new RadioButton();
             groupBox1 = new GroupBox();
-            radioButton1 = new RadioButton();
+            useTextureButton = new RadioButton();
             radioButton2 = new RadioButton();
             mapButton = new Button();
             mapDisplay = new Display();
@@ -159,7 +159,7 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(radioButton1);
+            groupBox1.Controls.Add(useTextureButton);
             groupBox1.Controls.Add(radioButton2);
             groupBox1.Location = new Point(159, 91);
             groupBox1.Name = "groupBox1";
@@ -167,15 +167,16 @@
             groupBox1.TabIndex = 32;
             groupBox1.TabStop = false;
             // 
-            // radioButton1
+            // useTextureButton
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(6, 13);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(63, 19);
-            radioButton1.TabIndex = 24;
-            radioButton1.Text = "Texture";
-            radioButton1.UseVisualStyleBackColor = true;
+            useTextureButton.AutoSize = true;
+            useTextureButton.Location = new Point(6, 13);
+            useTextureButton.Name = "useTextureButton";
+            useTextureButton.Size = new Size(63, 19);
+            useTextureButton.TabIndex = 24;
+            useTextureButton.Text = "Texture";
+            useTextureButton.UseVisualStyleBackColor = true;
+            useTextureButton.CheckedChanged += useTextureButton_CheckedChanged;
             // 
             // radioButton2
             // 
@@ -521,7 +522,7 @@
         private Button surfaceColorButton;
         private Button lightColorButton;
         private RadioButton radioButton2;
-        private RadioButton radioButton1;
+        private RadioButton useTextureButton;
         private Button mapButton;
         private Display mapDisplay;
         private RadioButton radioButton4;
