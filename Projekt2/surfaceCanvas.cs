@@ -16,7 +16,7 @@ namespace Projekt2
 {
     public partial class surfaceCanvas : UserControl
     {
-        private Surface? surface;
+        public Surface? surface;
 
 
 
@@ -57,6 +57,9 @@ namespace Projekt2
             UpdateAngles(0, 0);
             UpdatePrecision(5, 5);
             SetControlPoints(pts, 4, 4);
+
+
+
             Refresh();
 
 
@@ -164,6 +167,23 @@ namespace Projekt2
             if (surface == null)
                 return;
             surface.LightColor = color;
+            Invalidate();
+        }
+
+        public void SetMap(Bitmap bitmap)
+        {
+            if (surface == null)
+                return;
+            surface.Map = bitmap;
+            Invalidate();
+        }
+
+        public void UseMap(bool use)
+        {
+            if (surface == null)
+                return;
+
+            surface.UseMap = use;
             Invalidate();
         }
     }

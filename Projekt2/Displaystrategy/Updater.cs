@@ -210,6 +210,10 @@ namespace Projekt2
             
             var ret = new Vertex(position)
             {
+                Pu = Pu,
+                Pv = Pv,
+                U = u,
+                V = v,
                 Normal = Vector3.Normalize(Vector3.Cross(Pu, Pv)),
             };
 

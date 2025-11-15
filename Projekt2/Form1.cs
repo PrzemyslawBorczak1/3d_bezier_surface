@@ -1,6 +1,9 @@
 using System.Globalization;
 
 using System.Numerics;
+using System.Windows.Forms;
+using System.IO;
+using System.Drawing;
 
 
 namespace Projekt2
@@ -77,22 +80,26 @@ namespace Projekt2
         private void alfaBar_ValueChanged(object sender, EventArgs e)
         {
             surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
+            alfaLabel.Text = $"alfa: {alfaBar.Value}°";
 
         }
 
         private void betaBar_ValueChanged(object sender, EventArgs e)
         {
             surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
+            betaLabel.Text = $"beta: {betaBar.Value}°";
         }
 
         private void precisionU_ValueChanged(object sender, EventArgs e)
         {
             surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            uLabel.Text = $"u: {uBar.Value}";
         }
 
         private void precisionV_ValueChanged(object sender, EventArgs e)
         {
             surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            vLabel.Text = $"v: {vBar.Value}";
         }
 
 
@@ -144,17 +151,27 @@ namespace Projekt2
         }
 
 
-        private void kdBar_ValueChanged(object sender, EventArgs e) => surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
-        
-        private void ksBar_ValueChanged(object sender, EventArgs e) => surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
-        
-        private void mBar_ValueChanged(object sender, EventArgs e) =>  surfaceCanvas1.SetM(mBar.Value);
-
-       
-        private void loadTextureButton_Click(object sender, EventArgs e)
+        private void kdBar_ValueChanged(object sender, EventArgs e)
         {
+            surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
 
+            kdLabel.Text = $"kd: {kdBar.Value}%";
         }
+
+        private void ksBar_ValueChanged(object sender, EventArgs e)
+        {
+            surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
+            ksLabel.Text = $"ks: {ksBar.Value}%";
+        }
+
+        private void mBar_ValueChanged(object sender, EventArgs e)
+        {
+            surfaceCanvas1.SetM(mBar.Value);
+            mLabel.Text = $"m: {mBar.Value}";
+        }
+
+
+
 
         private void surfaceColorButton_Click(object sender, EventArgs e)
         {
@@ -186,6 +203,63 @@ namespace Projekt2
 
         }
 
-        
+
+
+        private void loadTextureButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void mapButton_Click(object sender, EventArgs e)
+        {
+            if (surfaceCanvas1.surface == null)
+            {
+                MessageBox.Show(this, "Load control points first.", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Rectangle r = surfaceCanvas1.surface.GetBounds();
+            var w = r.Width;
+            var h = r.Height;
+
+            using var dlg = new OpenFileDialog();
+            dlg.Title = "Select a file";
+            dlg.Filter = "PNG images (*.png)|*.png";
+            dlg.FilterIndex = 1;
+            dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            dlg.Multiselect = false;
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                string path = dlg.FileName;
+                try
+                {
+                    using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    using var srcImage = Image.FromStream(fs);
+
+                    // Keep the original image size — do not stretch/resample to surface size.
+                    // Create a Bitmap copy from the loaded image and use that as the texture.
+                    var bmp = new Bitmap(srcImage);
+
+                    var oldDisplayImage = mapDisplay.BackgroundImage;
+                    mapDisplay.BackgroundImage = new Bitmap(bmp);
+                    mapDisplay.BackgroundImageLayout = ImageLayout.Zoom;
+                    oldDisplayImage?.Dispose();
+
+                    // Give the bitmap to the canvas (surfaceCanvas1 should own/dispose it later if needed).
+                    surfaceCanvas1.SetMap(bmp);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, $"Unable to load image: {ex.Message}", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void useMapButton_CheckedChanged(object sender, EventArgs e)
+        {
+           surfaceCanvas1.UseMap(useMapButton.Checked);
+        }
     }
 }

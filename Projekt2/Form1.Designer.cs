@@ -30,11 +30,16 @@
         {
             splitContainer1 = new SplitContainer();
             surfaceCanvas1 = new surfaceCanvas();
+            radioButton4 = new RadioButton();
+            useMapButton = new RadioButton();
+            groupBox1 = new GroupBox();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            mapButton = new Button();
+            mapDisplay = new Display();
             surfaceColorButton = new Button();
             lightColorButton = new Button();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            display1 = new Display();
+            textureDisplay = new Display();
             loadTextureButton = new Button();
             fillBox = new CheckBox();
             meshBox = new CheckBox();
@@ -42,25 +47,26 @@
             animationBox = new CheckBox();
             lightAnimationBar = new TrackBar();
             label7 = new Label();
-            label6 = new Label();
-            label5 = new Label();
-            kd = new Label();
+            mLabel = new Label();
+            ksLabel = new Label();
+            kdLabel = new Label();
             kdBar = new TrackBar();
             mBar = new TrackBar();
             ksBar = new TrackBar();
-            label4 = new Label();
+            vLabel = new Label();
             vBar = new TrackBar();
-            label3 = new Label();
+            uLabel = new Label();
             uBar = new TrackBar();
-            label2 = new Label();
+            betaLabel = new Label();
             betaBar = new TrackBar();
-            label1 = new Label();
+            alfaLabel = new Label();
             loadButton = new Button();
             alfaBar = new TrackBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)lightAnimationBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)kdBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mBar).BeginInit();
@@ -84,11 +90,14 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = SystemColors.WindowFrame;
+            splitContainer1.Panel2.Controls.Add(radioButton4);
+            splitContainer1.Panel2.Controls.Add(useMapButton);
+            splitContainer1.Panel2.Controls.Add(groupBox1);
+            splitContainer1.Panel2.Controls.Add(mapButton);
+            splitContainer1.Panel2.Controls.Add(mapDisplay);
             splitContainer1.Panel2.Controls.Add(surfaceColorButton);
             splitContainer1.Panel2.Controls.Add(lightColorButton);
-            splitContainer1.Panel2.Controls.Add(radioButton2);
-            splitContainer1.Panel2.Controls.Add(radioButton1);
-            splitContainer1.Panel2.Controls.Add(display1);
+            splitContainer1.Panel2.Controls.Add(textureDisplay);
             splitContainer1.Panel2.Controls.Add(loadTextureButton);
             splitContainer1.Panel2.Controls.Add(fillBox);
             splitContainer1.Panel2.Controls.Add(meshBox);
@@ -96,19 +105,19 @@
             splitContainer1.Panel2.Controls.Add(animationBox);
             splitContainer1.Panel2.Controls.Add(lightAnimationBar);
             splitContainer1.Panel2.Controls.Add(label7);
-            splitContainer1.Panel2.Controls.Add(label6);
-            splitContainer1.Panel2.Controls.Add(label5);
-            splitContainer1.Panel2.Controls.Add(kd);
+            splitContainer1.Panel2.Controls.Add(mLabel);
+            splitContainer1.Panel2.Controls.Add(ksLabel);
+            splitContainer1.Panel2.Controls.Add(kdLabel);
             splitContainer1.Panel2.Controls.Add(kdBar);
             splitContainer1.Panel2.Controls.Add(mBar);
             splitContainer1.Panel2.Controls.Add(ksBar);
-            splitContainer1.Panel2.Controls.Add(label4);
+            splitContainer1.Panel2.Controls.Add(vLabel);
             splitContainer1.Panel2.Controls.Add(vBar);
-            splitContainer1.Panel2.Controls.Add(label3);
+            splitContainer1.Panel2.Controls.Add(uLabel);
             splitContainer1.Panel2.Controls.Add(uBar);
-            splitContainer1.Panel2.Controls.Add(label2);
+            splitContainer1.Panel2.Controls.Add(betaLabel);
             splitContainer1.Panel2.Controls.Add(betaBar);
-            splitContainer1.Panel2.Controls.Add(label1);
+            splitContainer1.Panel2.Controls.Add(alfaLabel);
             splitContainer1.Panel2.Controls.Add(loadButton);
             splitContainer1.Panel2.Controls.Add(alfaBar);
             splitContainer1.Size = new Size(1018, 544);
@@ -124,6 +133,79 @@
             surfaceCanvas1.Name = "surfaceCanvas1";
             surfaceCanvas1.Size = new Size(705, 544);
             surfaceCanvas1.TabIndex = 0;
+            // 
+            // radioButton4
+            // 
+            radioButton4.AutoSize = true;
+            radioButton4.Checked = true;
+            radioButton4.Location = new Point(126, 509);
+            radioButton4.Name = "radioButton4";
+            radioButton4.Size = new Size(64, 19);
+            radioButton4.TabIndex = 31;
+            radioButton4.TabStop = true;
+            radioButton4.Text = "not use";
+            radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // useMapButton
+            // 
+            useMapButton.AutoSize = true;
+            useMapButton.Location = new Point(126, 484);
+            useMapButton.Name = "useMapButton";
+            useMapButton.Size = new Size(70, 19);
+            useMapButton.TabIndex = 30;
+            useMapButton.Text = "use map";
+            useMapButton.UseVisualStyleBackColor = true;
+            useMapButton.CheckedChanged += useMapButton_CheckedChanged;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(radioButton1);
+            groupBox1.Controls.Add(radioButton2);
+            groupBox1.Location = new Point(159, 91);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(138, 38);
+            groupBox1.TabIndex = 32;
+            groupBox1.TabStop = false;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(6, 13);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(63, 19);
+            radioButton1.TabIndex = 24;
+            radioButton1.Text = "Texture";
+            radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Checked = true;
+            radioButton2.Location = new Point(75, 13);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(51, 19);
+            radioButton2.TabIndex = 25;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "Solid";
+            radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // mapButton
+            // 
+            mapButton.Location = new Point(126, 455);
+            mapButton.Name = "mapButton";
+            mapButton.Size = new Size(104, 23);
+            mapButton.TabIndex = 29;
+            mapButton.Text = "Load map";
+            mapButton.UseVisualStyleBackColor = true;
+            mapButton.Click += mapButton_Click;
+            // 
+            // mapDisplay
+            // 
+            mapDisplay.BackColor = SystemColors.ButtonFace;
+            mapDisplay.Location = new Point(19, 455);
+            mapDisplay.Name = "mapDisplay";
+            mapDisplay.Size = new Size(89, 77);
+            mapDisplay.TabIndex = 28;
             // 
             // surfaceColorButton
             // 
@@ -145,39 +227,17 @@
             lightColorButton.UseVisualStyleBackColor = true;
             lightColorButton.Click += lightColorButton_Click;
             // 
-            // radioButton2
+            // textureDisplay
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Checked = true;
-            radioButton2.Location = new Point(236, 104);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(51, 19);
-            radioButton2.TabIndex = 25;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Solid";
-            radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(159, 104);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(63, 19);
-            radioButton1.TabIndex = 24;
-            radioButton1.Text = "Texture";
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // display1
-            // 
-            display1.BackColor = SystemColors.ButtonFace;
-            display1.Location = new Point(159, 164);
-            display1.Name = "display1";
-            display1.Size = new Size(127, 64);
-            display1.TabIndex = 23;
+            textureDisplay.BackColor = SystemColors.ButtonFace;
+            textureDisplay.Location = new Point(159, 164);
+            textureDisplay.Name = "textureDisplay";
+            textureDisplay.Size = new Size(63, 64);
+            textureDisplay.TabIndex = 23;
             // 
             // loadTextureButton
             // 
-            loadTextureButton.Location = new Point(159, 135);
+            loadTextureButton.Location = new Point(160, 135);
             loadTextureButton.Name = "loadTextureButton";
             loadTextureButton.Size = new Size(127, 23);
             loadTextureButton.TabIndex = 22;
@@ -248,37 +308,38 @@
             label7.TabIndex = 15;
             label7.Text = "Light Animation:";
             // 
-            // label6
+            // mLabel
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(15, 329);
-            label6.Name = "label6";
-            label6.Size = new Size(18, 15);
-            label6.TabIndex = 14;
-            label6.Text = "m";
+            mLabel.AutoSize = true;
+            mLabel.Location = new Point(15, 329);
+            mLabel.Name = "mLabel";
+            mLabel.Size = new Size(18, 15);
+            mLabel.TabIndex = 14;
+            mLabel.Text = "m";
             // 
-            // label5
+            // ksLabel
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(15, 284);
-            label5.Name = "label5";
-            label5.Size = new Size(18, 15);
-            label5.TabIndex = 13;
-            label5.Text = "ks";
+            ksLabel.AutoSize = true;
+            ksLabel.Location = new Point(15, 284);
+            ksLabel.Name = "ksLabel";
+            ksLabel.Size = new Size(18, 15);
+            ksLabel.TabIndex = 13;
+            ksLabel.Text = "ks";
             // 
-            // kd
+            // kdLabel
             // 
-            kd.AutoSize = true;
-            kd.Location = new Point(13, 236);
-            kd.Name = "kd";
-            kd.Size = new Size(20, 15);
-            kd.TabIndex = 12;
-            kd.Text = "kd";
+            kdLabel.AutoSize = true;
+            kdLabel.Location = new Point(13, 236);
+            kdLabel.Name = "kdLabel";
+            kdLabel.Size = new Size(20, 15);
+            kdLabel.TabIndex = 12;
+            kdLabel.Text = "kd";
             // 
             // kdBar
             // 
             kdBar.Location = new Point(12, 254);
-            kdBar.Maximum = 100;
+            kdBar.Maximum = 99;
+            kdBar.Minimum = 1;
             kdBar.Name = "kdBar";
             kdBar.Size = new Size(124, 45);
             kdBar.SmallChange = 10;
@@ -300,7 +361,8 @@
             // ksBar
             // 
             ksBar.Location = new Point(12, 299);
-            ksBar.Maximum = 100;
+            ksBar.Maximum = 99;
+            ksBar.Minimum = 1;
             ksBar.Name = "ksBar";
             ksBar.Size = new Size(121, 45);
             ksBar.TabIndex = 9;
@@ -308,14 +370,14 @@
             ksBar.Value = 50;
             ksBar.ValueChanged += ksBar_ValueChanged;
             // 
-            // label4
+            // vLabel
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(13, 185);
-            label4.Name = "label4";
-            label4.Size = new Size(13, 15);
-            label4.TabIndex = 8;
-            label4.Text = "v";
+            vLabel.AutoSize = true;
+            vLabel.Location = new Point(13, 185);
+            vLabel.Name = "vLabel";
+            vLabel.Size = new Size(13, 15);
+            vLabel.TabIndex = 8;
+            vLabel.Text = "v";
             // 
             // vBar
             // 
@@ -329,14 +391,14 @@
             vBar.Value = 5;
             vBar.ValueChanged += precisionV_ValueChanged;
             // 
-            // label3
+            // uLabel
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 143);
-            label3.Name = "label3";
-            label3.Size = new Size(14, 15);
-            label3.TabIndex = 6;
-            label3.Text = "u";
+            uLabel.AutoSize = true;
+            uLabel.Location = new Point(12, 143);
+            uLabel.Name = "uLabel";
+            uLabel.Size = new Size(14, 15);
+            uLabel.TabIndex = 6;
+            uLabel.Text = "u";
             // 
             // uBar
             // 
@@ -350,14 +412,14 @@
             uBar.Value = 5;
             uBar.ValueChanged += precisionU_ValueChanged;
             // 
-            // label2
+            // betaLabel
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(13, 86);
-            label2.Name = "label2";
-            label2.Size = new Size(30, 15);
-            label2.TabIndex = 4;
-            label2.Text = "beta";
+            betaLabel.AutoSize = true;
+            betaLabel.Location = new Point(13, 86);
+            betaLabel.Name = "betaLabel";
+            betaLabel.Size = new Size(30, 15);
+            betaLabel.TabIndex = 4;
+            betaLabel.Text = "beta";
             // 
             // betaBar
             // 
@@ -371,14 +433,14 @@
             betaBar.Value = 2;
             betaBar.ValueChanged += betaBar_ValueChanged;
             // 
-            // label1
+            // alfaLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(13, 38);
-            label1.Name = "label1";
-            label1.Size = new Size(26, 15);
-            label1.TabIndex = 2;
-            label1.Text = "alfa";
+            alfaLabel.AutoSize = true;
+            alfaLabel.Location = new Point(13, 38);
+            alfaLabel.Name = "alfaLabel";
+            alfaLabel.Size = new Size(26, 15);
+            alfaLabel.TabIndex = 2;
+            alfaLabel.Text = "alfa";
             // 
             // loadButton
             // 
@@ -416,6 +478,8 @@
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)lightAnimationBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)kdBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)mBar).EndInit();
@@ -433,19 +497,19 @@
         private surfaceCanvas surfaceCanvas1;
         private Button loadButton;
         private TrackBar alfaBar;
-        private Label label1;
-        private Label label2;
+        private Label alfaLabel;
+        private Label betaLabel;
         private TrackBar betaBar;
-        private Label label3;
+        private Label uLabel;
         private TrackBar uBar;
         private TrackBar vBar;
-        private Label label4;
-        private Label label5;
-        private Label kd;
+        private Label vLabel;
+        private Label ksLabel;
+        private Label kdLabel;
         private TrackBar kdBar;
         private TrackBar mBar;
         private TrackBar ksBar;
-        private Label label6;
+        private Label mLabel;
         private CheckBox animationBox;
         private TrackBar lightAnimationBar;
         private Label label7;
@@ -453,10 +517,15 @@
         private CheckBox fillBox;
         private CheckBox meshBox;
         private Button loadTextureButton;
-        private Display display1;
+        private Display textureDisplay;
         private Button surfaceColorButton;
         private Button lightColorButton;
         private RadioButton radioButton2;
         private RadioButton radioButton1;
+        private Button mapButton;
+        private Display mapDisplay;
+        private RadioButton radioButton4;
+        private RadioButton useMapButton;
+        private GroupBox groupBox1;
     }
 }

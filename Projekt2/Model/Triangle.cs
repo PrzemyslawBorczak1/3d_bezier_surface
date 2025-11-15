@@ -193,75 +193,94 @@ namespace Projekt2
         private void PutPixelWithShade(MyBitmap myBitmap, int x, int y, int z)
         {
             // TODO wyliczanie tego
-            if(surface == null)
+            if (surface == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
-            Vector3 LightSource = new(0, 0, 50000);
-
-
-            float kd = 0.5f;
-            float ks = 0.5f;
-            int m = 1;
-            Vector3 Il = new(1.0f, 1.0f, .1f);
-            Vector3 Io = new(.0f, .1f, 1f);
-
-
-                 kd = surface.Kd;
-                 ks = surface.Ks;
-                 m = surface.M;
-
-                Il = new Vector3(
-                    surface.LightColor.R / 255.0f,
-                    surface.LightColor.G / 255.0f,
-                    surface.LightColor.B / 255.0f);
-                Io = new Vector3(
-                    surface.SurfaceColor.R / 255.0f,
-                    surface.SurfaceColor.G / 255.0f,
-                    surface.SurfaceColor.B / 255.0f);
             
+            Vector3 LightSource = new(0, 0, 500);
 
+            float kd = surface.Kd;
+            float ks = surface.Ks;
+            int m = surface.M;
 
+            Vector3 Il = new(
+                surface.LightColor.R / 255.0f,
+                surface.LightColor.G / 255.0f,
+                surface.LightColor.B / 255.0f);
+            Vector3 Io = new(
+                surface.SurfaceColor.R / 255.0f,
+                surface.SurfaceColor.G / 255.0f,
+                surface.SurfaceColor.B / 255.0f);
 
 
             Func<Vector3, Vector3, Vector3, float> Area = (a, b, c) =>
             {
-                return 0.5f * Vector3.Cross(b - a, c - a).Length();
+                return Math.Abs((b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X)) * 0.5f;
             };
 
             float totalArea = Area(vertices[0].Cord, vertices[1].Cord, vertices[2].Cord);
 
             var p = new Vector3(x, y, 0);
-            float alfa = Area(vertices[0].Cord, vertices[1].Cord, p);
-            float beta = Area(vertices[0].Cord, vertices[2].Cord, p);
-            float gamma = Area(vertices[1].Cord, vertices[2].Cord, p);
+            float alfa = Area(vertices[0].Cord, vertices[1].Cord, p) / totalArea;
+            float beta = Area(vertices[0].Cord, p, vertices[2].Cord) / totalArea;
+            float gamma = Area(p, vertices[1].Cord, vertices[2].Cord) / totalArea;
 
 
-            var N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal) / totalArea;
+            var N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal);
             N = Vector3.Normalize(N);
+            if(surface.Map != null && surface.UseMap)
+            {
+                double u = (alfa * vertices[2].U + beta * vertices[1].U + gamma * vertices[0].U);
+                double v = (alfa * vertices[2].V + beta * vertices[1].V + gamma * vertices[0].V);
+
+                u = Math.Clamp(u, 0f, 1f);
+                v = Math.Clamp(v, 0f, 1f);
+
+                var map = surface.Map;
+
+                int ix = Math.Clamp((int)(u * map.Width), 0, map.Width - 1);
+                int iy = Math.Clamp((int)(v * map.Height), 0, map.Height - 1);
+
+                var color = map.GetPixel(ix, iy);
+
+                float nx = color.R / 255f * 2f - 1f;
+                float ny = color.G / 255f * 2f - 1f;
+                float nz = Math.Abs(color.B / 255f * 2f - 1f);
+
+                Vector3 NB = new Vector3(nx, ny, nz);
+
+                var Pu = (alfa * vertices[2].Pu + beta * vertices[1].Pu + gamma * vertices[0].Pu);
+                var Pv = (alfa * vertices[2].Pv + beta * vertices[1].Pv + gamma * vertices[0].Pv);
+
+                
+
+                Matrix3x3 M = new Matrix3x3(Vector3.Normalize(Pu), Vector3.Normalize(Pv), Vector3.Normalize(N));
+                N = Vector3.Normalize(M * NB);
+            }
+
 
 
             Vector3 L = Vector3.Normalize(LightSource - p);
             float cosNL = Vector3.Dot(N, L);
             var I = kd * Il * Io * cosNL;
 
-            Vector3 V = new(0,0,1);
-            Vector3 R = 2 * Vector3.Dot(N,L) * (N - L);
-
+            Vector3 V = new(0, 0, 1);
+            Vector3 R = 2 * Vector3.Dot(N, L) * (N - L);
             float cosVR = Vector3.Dot(V, R);
             I += ks * Il * Io * (float)Math.Pow(cosVR, m);
 
-            // TODO change so 0 will color
             I.X = I.X < 0 ? 0 : I.X;
             I.Y = I.Y < 0 ? 0 : I.Y;
             I.Z = I.Z < 0 ? 0 : I.Z;
 
-            myBitmap.SetPixel(x, y,z, Color.FromArgb(
+            myBitmap.SetPixel(x, y, z, Color.FromArgb(
                 Math.Min((int)(I.X * 255), 255),
                 Math.Min((int)(I.Y * 255), 255),
                 Math.Min((int)(I.Z * 255), 255)
                 ));
         }
+
 
     }
 }
