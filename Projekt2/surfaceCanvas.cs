@@ -54,8 +54,8 @@ namespace Projekt2
             }
 
 
-            UpdateAngles(0,0);
-            UpdatePrecision(5,5);
+            UpdateAngles(0, 0);
+            UpdatePrecision(5, 5);
             SetControlPoints(pts, 4, 4);
             Refresh();
 
@@ -70,8 +70,10 @@ namespace Projekt2
             if (surface == null)
             {
                 surface = new Surface();
+
             }
-            
+            Triangle.surface = surface;
+
             surface.SetControlPoints(points, width, height);
         }
 
@@ -89,11 +91,11 @@ namespace Projekt2
             Graphics g = e.Graphics;
             g.ScaleTransform(1, -1);
             g.TranslateTransform(this.Width / 2, -this.Height / 2);
-            DisplayStrategy.DrawAll(surface,g);
+            DisplayStrategy.DrawAll(surface, g);
 
         }
-    
-    
+
+
 
         public void UpdateAngles(int alfa, int beta)
         {
@@ -104,13 +106,65 @@ namespace Projekt2
 
         public void UpdatePrecision(int U, int V)
         {
-           
-           Updater.UpdatePrecision(U, V);
+
+            Updater.UpdatePrecision(U, V);
 
             Invalidate();
         }
 
 
+        public void AddDisplayStrategy(IDisplayStrategy strategy)
+        {
+            DisplayStrategy.AddStrategy(strategy);
+        }
 
+
+        public void SetKd(float Kd)
+        {
+
+            if (surface == null)
+                return;
+            lock (surface)
+            {
+                surface.Kd = Kd;
+            }
+            Invalidate();
+        }
+        public void SetKs(float Ks)
+        {
+            if (surface == null)
+                return;
+
+            surface.Ks = Ks;
+
+            Invalidate();
+        }
+
+        public void SetM(int m)
+        {
+            if (surface == null)
+                return;
+
+
+            surface.M = m;
+
+            Invalidate();
+        }
+
+        public void SetSurfaceColor(Color color)
+        {
+            if (surface == null)
+                return;
+            surface.SurfaceColor = color;
+            Invalidate();
+        }
+
+        public void SetLightColor(Color color)
+        {
+            if (surface == null)
+                return;
+            surface.LightColor = color;
+            Invalidate();
+        }
     }
 }

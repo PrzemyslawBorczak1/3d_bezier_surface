@@ -13,6 +13,8 @@ namespace Projekt2
 {
     public class Triangle
     {
+        public static Surface? surface = null;
+
         List<Vertex> vertices = new List<Vertex>();
 
         List<Edge> edges = new List<Edge>();
@@ -50,7 +52,7 @@ namespace Projekt2
         {
             foreach (var edge in edges)
             {
-                g.DrawLine(Pens.Black, edge.Start.Cord.X, edge.Start.Cord.Y, edge.End.Cord.X, edge.End.Cord.Y);
+                g.DrawLine(Pens.Green, edge.Start.Cord.X, edge.Start.Cord.Y, edge.End.Cord.X, edge.End.Cord.Y);
             }
 
         }
@@ -182,7 +184,7 @@ namespace Projekt2
             float z = z1;
             float zM = (x2 - x1) == 0 ? 0 : (z2 - z1) / (x2 - x1);
             for (int x = x1; x <= x2; x++)
-           {
+            {
                 PutPixelWithShade(myBitmap, x, y, (int)z);
                 z += zM;
             }
@@ -191,12 +193,34 @@ namespace Projekt2
         private void PutPixelWithShade(MyBitmap myBitmap, int x, int y, int z)
         {
             // TODO wyliczanie tego
+            if(surface == null)
+            {
+                throw new InvalidOperationException("Surface is not set for Triangle");
+            }
+            Vector3 LightSource = new(0, 0, 50000);
+
+
+            float kd = 0.5f;
+            float ks = 0.5f;
+            int m = 1;
             Vector3 Il = new(1.0f, 1.0f, .1f);
             Vector3 Io = new(.0f, .1f, 1f);
-            Vector3 LightSource = new(0, 0, 50000);
-            float kd = 0.01f;
-            float ks = 0.05f;
-            int m = 4;
+
+
+                 kd = surface.Kd;
+                 ks = surface.Ks;
+                 m = surface.M;
+
+                Il = new Vector3(
+                    surface.LightColor.R / 255.0f,
+                    surface.LightColor.G / 255.0f,
+                    surface.LightColor.B / 255.0f);
+                Io = new Vector3(
+                    surface.SurfaceColor.R / 255.0f,
+                    surface.SurfaceColor.G / 255.0f,
+                    surface.SurfaceColor.B / 255.0f);
+            
+
 
 
 

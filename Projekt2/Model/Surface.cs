@@ -20,10 +20,17 @@ namespace Projekt2
         public List<Vector3> CalculetedPoints = new();
 
 
-        public List<Vector3> BezierPoints = new();
+       // public List<Vector3> BezierPoints = new();
 
         public List<Vertex> Vertices = new();
         public List<Triangle> Triangles = new();
+
+        public float Kd { get; set; }
+        public float Ks { get; set; }
+        public int M { get; set; }
+
+        public Color SurfaceColor { get; set; } = Color.Blue;
+        public Color LightColor { get; set; } = Color.White;
 
 
 
@@ -34,6 +41,7 @@ namespace Projekt2
             Height = height;
         }
 
+        // TODO mayby fsater?
         public Rectangle GetBounds()
         {
             int minX = CalculetedPoints.Min(p => (int)p.X);

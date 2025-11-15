@@ -15,22 +15,27 @@ namespace Projekt2
 
     public static class DisplayStrategy
     {
-        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { ControlNet.GetInstance() , Shadow.GetInstance() };
+        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { ControlNet.GetInstance() , Fill.GetInstance() };
 
 
 
-        public static void UpdateStrategy(IDisplayStrategy strategy)
+        public static void AddStrategy(IDisplayStrategy strategy)
         {
-            if (strategies.Remove(strategy))
-                return;
-
+            if(strategies.Contains(strategy))
+               return;
             strategies.Add(strategy);
         }
 
+        public static void RemoveStrategy(IDisplayStrategy strategy)
+        {
+            strategies.Remove(strategy);
+        }
+
+
         public static void DrawAll(Surface surface, Graphics g)
         {
-            // TODO
-            g.Clear(Color.LightBlue);
+            // TODO change backgorund
+            g.Clear(Color.Black);
 
             Updater.UpdateSurface(surface);
             foreach (var strategy in strategies)

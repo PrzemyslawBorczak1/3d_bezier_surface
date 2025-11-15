@@ -58,6 +58,11 @@ namespace Projekt2
                     surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
                     surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
                     surfaceCanvas1.SetControlPoints(pts, width, height);
+
+                    surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
+                    surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
+                    surfaceCanvas1.SetM(mBar.Value);
+
                     surfaceCanvas1.Refresh();
 
                 }
@@ -80,16 +85,107 @@ namespace Projekt2
             surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
         }
 
-
         private void precisionU_ValueChanged(object sender, EventArgs e)
         {
-            surfaceCanvas1.UpdatePrecision(uBar.Value,  vBar.Value);
+            surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
         }
-
 
         private void precisionV_ValueChanged(object sender, EventArgs e)
         {
             surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
         }
+
+
+
+
+        private void controlNetBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (controlNetBox.Checked)
+            {
+                DisplayStrategy.AddStrategy(ControlNet.GetInstance());
+            }
+            else
+            {
+                DisplayStrategy.RemoveStrategy(ControlNet.GetInstance());
+            }
+
+            surfaceCanvas1.Refresh();
+        }
+
+        private void meshBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (meshBox.Checked)
+            {
+                DisplayStrategy.AddStrategy(Mesh.GetInstance());
+            }
+            else
+            {
+                DisplayStrategy.RemoveStrategy(Mesh.GetInstance());
+            }
+
+            surfaceCanvas1.Refresh();
+
+        }
+
+        private void fillBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fillBox.Checked)
+            {
+                DisplayStrategy.AddStrategy(Fill.GetInstance());
+            }
+            else
+            {
+                DisplayStrategy.RemoveStrategy(Fill.GetInstance());
+
+            }
+
+            surfaceCanvas1.Refresh();
+
+        }
+
+
+        private void kdBar_ValueChanged(object sender, EventArgs e) => surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
+        
+        private void ksBar_ValueChanged(object sender, EventArgs e) => surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
+        
+        private void mBar_ValueChanged(object sender, EventArgs e) =>  surfaceCanvas1.SetM(mBar.Value);
+
+       
+        private void loadTextureButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void surfaceColorButton_Click(object sender, EventArgs e)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                colorDialog.AllowFullOpen = true;
+                colorDialog.AnyColor = true;
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    surfaceCanvas1.SetSurfaceColor(colorDialog.Color);
+                }
+            }
+
+        }
+
+        private void lightColorButton_Click(object sender, EventArgs e)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                colorDialog.AllowFullOpen = true;
+                colorDialog.AnyColor = true;
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    surfaceCanvas1.SetLightColor(colorDialog.Color);
+                }
+            }
+
+        }
+
+        
     }
 }

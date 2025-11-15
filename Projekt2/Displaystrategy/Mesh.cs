@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Projekt2
 {
-    public class TriangleNet : IDisplayStrategy
+    public class Mesh : IDisplayStrategy
     {
 
-        static TriangleNet? instance = null; 
-        private TriangleNet()
+        static Mesh? instance = null; 
+        private Mesh()
         {
         }
-        public static TriangleNet GetInstance()
+        public static Mesh GetInstance()
         {
             if(instance == null)
-                instance = new TriangleNet();
+                instance = new Mesh();
             return instance;
         }
 
@@ -26,15 +26,10 @@ namespace Projekt2
                 return;
 
            
-            
             foreach (var triangle in surface.Triangles)
             {
                 triangle.DrawEdges(g);
             }
-            //foreach (var ver in surface.Vertices)
-            //{
-            //    g.DrawLine(Pens.Black, ver.Cord.X, ver.Cord.Y, ver.Cord.X + ver.Normal.X, ver.Cord.Y + ver.Normal.Y);
-            //}
         }
 
     }
