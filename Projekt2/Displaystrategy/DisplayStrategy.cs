@@ -15,7 +15,7 @@ namespace Projekt2
 
     public static class DisplayStrategy
     {
-        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { SolidColor.GetInstance(), TriangleNet.GetInstance(), ControlNet.GetInstance()};
+        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { SolidColor.GetInstance(), TriangleNet.GetInstance()};
 
 
 

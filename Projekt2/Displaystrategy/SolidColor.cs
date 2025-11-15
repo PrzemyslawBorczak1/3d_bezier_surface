@@ -29,7 +29,6 @@ namespace Projekt2
             MyBitmap myBitmap = new MyBitmap(surfaceBounds);
 
 
-            // TODO parallel
             Parallel.For(0, surface.Triangles.Count, i =>
             {
                 var tr = surface.Triangles[i];
@@ -56,7 +55,6 @@ namespace Projekt2
         }
 
 
-        // TODO add marshal
         public Bitmap Blit(Color[] src, int width, int height)
         {
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);

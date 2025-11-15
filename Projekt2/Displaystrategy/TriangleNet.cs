@@ -31,6 +31,10 @@ namespace Projekt2
             {
                 triangle.Draw(g);
             }
+            foreach (var ver in surface.Vertices)
+            {
+                g.DrawLine(Pens.Black, ver.Cord.X, ver.Cord.Y, ver.Cord.X + ver.Normal.X, ver.Cord.Y + ver.Normal.Y);
+            }
         }
 
     }

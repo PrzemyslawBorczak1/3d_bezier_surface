@@ -11,6 +11,7 @@ namespace Projekt2
     public class Vertex
     {
         public Vector3 Cord;
+        public Vector3 Normal;
 
         public Vertex(Vector3 a)
         {
