@@ -47,8 +47,12 @@ namespace Projekt2
                 if(i + 1 < points.Count && i % surface.Width != 3)
                     g.DrawLine(Pens.Blue, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
 
-                
-                g.FillEllipse(Brushes.Red, points[i].X - 2, points[i].Y - 2, 4, 4);
+
+                // TODO change into one color
+                if (points[i].Z < 0)
+                    g.FillEllipse(Brushes.Green, points[i].X - 5, points[i].Y - 5, 10, 10);
+                else
+                    g.FillEllipse(Brushes.Red, points[i].X - 5, points[i].Y - 5, 10, 10);
             }
         }
     }

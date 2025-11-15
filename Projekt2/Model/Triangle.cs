@@ -61,7 +61,7 @@ namespace Projekt2
 
 
         // bucket sort :((
-        private void Fill(MyBitmap myBitmap,  Action<MyBitmap, int, int, int>DrawLine)
+        private void Fill(MyBitmap myBitmap,  Action<MyBitmap, int, int, int, float, float>DrawLine)
         {
 
             LinkedList<Edge>[] ET = new LinkedList<Edge>[dy];
@@ -99,9 +99,12 @@ namespace Projekt2
 
                 for (int ct = 0; ct < AET.Count; ct += 2)
                 {
-                    DrawLine(myBitmap,(int)AET[ct].X, (int)AET[ct + 1].X,  i     + minY);
+                    DrawLine(myBitmap,(int)AET[ct].X, (int)AET[ct + 1].X,  i + minY, AET[ct].Z, AET[ct + 1].Z);
                     AET[ct].X += AET[ct].M;
                     AET[ct + 1].X += AET[ct + 1].M;
+
+                    AET[ct].Z += AET[ct].ZM;
+                    AET[ct + 1].Z += AET[ct + 1].ZM;
                 }
 
             }
@@ -149,8 +152,8 @@ namespace Projekt2
         }
 
 
-
-        private void DrawLineSolid(MyBitmap myBitmap, int x1, int x2, int y)
+        // TODO test but probaly doesnt need any changes
+        private void DrawLineSolid(MyBitmap myBitmap, int x1, int x2, int y, float z1, float z2)
         {
 
 
@@ -167,21 +170,25 @@ namespace Projekt2
 
         }
 
-        private void ShadesLine(MyBitmap myBitmap, int x1, int x2, int y)
+
+        private void ShadesLine(MyBitmap myBitmap, int x1, int x2, int y, float z1, float z2)
         {
             if (x1 > x2)
             {
                 (x1, x2) = (x2, x1);
+                (z1, z2) = (z2, z1);
             }
 
-
+            float z = z1;
+            float zM = (x2 - x1) == 0 ? 0 : (z2 - z1) / (x2 - x1);
             for (int x = x1; x <= x2; x++)
            {
-                PutPixelWithShade(myBitmap, x, y);
-           }
+                PutPixelWithShade(myBitmap, x, y, (int)z);
+                z += zM;
+            }
 
         }
-        private void PutPixelWithShade(MyBitmap myBitmap, int x, int y)
+        private void PutPixelWithShade(MyBitmap myBitmap, int x, int y, int z)
         {
             // TODO wyliczanie tego
             Vector3 Il = new(1.0f, 1.0f, .1f);
@@ -225,7 +232,7 @@ namespace Projekt2
             I.Y = I.Y < 0 ? 0 : I.Y;
             I.Z = I.Z < 0 ? 0 : I.Z;
 
-            myBitmap.SetPixel(x, y, Color.FromArgb(
+            myBitmap.SetPixel(x, y,z, Color.FromArgb(
                 Math.Min((int)(I.X * 255), 255),
                 Math.Min((int)(I.Y * 255), 255),
                 Math.Min((int)(I.Z * 255), 255)

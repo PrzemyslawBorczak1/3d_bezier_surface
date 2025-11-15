@@ -32,6 +32,7 @@ namespace Projekt2
             for (int i = 0; i < amount; i++)
             {
                 locks[i] = new object();
+                z[i] = int.MinValue;
             }
         }
 

@@ -19,6 +19,9 @@ namespace Projekt2
         public float M;
         public float X;
 
+        public float Z;
+        public float ZM;
+
         public Edge(Vertex start, Vertex end)
         {
             Start = start;
@@ -35,12 +38,16 @@ namespace Projekt2
             Ymin = (int)Start.Cord.Y;
             Ymax = (int)End.Cord.Y;
 
-            if (End.Cord.Y - Start.Cord.Y == 0)
-                M = 0;
-            else
-                M = (End.Cord.X - Start.Cord.X) / (End.Cord.Y - Start.Cord.Y);
+            M = End.Cord.Y - Start.Cord.Y == 0 ?
+                0 :
+                (End.Cord.X - Start.Cord.X) / (End.Cord.Y - Start.Cord.Y);
+
+            ZM = End.Cord.Z - Start.Cord.Z == 0 ?
+                0 :
+                (End.Cord.Z - Start.Cord.Z) / (End.Cord.Y - Start.Cord.Y);
 
             X = Start.Cord.X;
+            Z = Start.Cord.Z;
         }
 
     }
