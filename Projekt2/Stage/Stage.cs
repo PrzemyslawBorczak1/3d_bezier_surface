@@ -11,7 +11,7 @@ namespace Projekt2
     public class Stage
     {
 
-        public Surface surface;
+        public Surface? surface;
 
         public List<Light> Lights { get; set; } = new List<Light>();
 
@@ -24,7 +24,7 @@ namespace Projekt2
                     return;
 
                 _alfa = value;
-               // Updater.UpdateAngles(_alfa, _beta);
+                surface.RotateControlPoints(_alfa, _beta);
             }
         }
         private int _beta = 0;
@@ -34,7 +34,7 @@ namespace Projekt2
                 if (_beta == value)
                     return;
                 _beta = value;
-              //  Updater.UpdateAngles(_alfa, _beta);
+                surface.RotateControlPoints(_alfa, _beta);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Projekt2
                 if(_u == value)
                     return;
                 _u = value;
-               // Updater.UpdatePrecision(_u, _v);
+                surface.SetPrecision(_u, _v);
             }
         }
         public int _v = 5;
@@ -56,7 +56,7 @@ namespace Projekt2
                 if(_v == value)
                     return;
                 _v = value;
-             //   Updater.UpdatePrecision(_u, _v);
+                surface.SetPrecision(_u, _v);
             }
         }
 
@@ -75,12 +75,11 @@ namespace Projekt2
 
         public Stage()
         {
-           surface = new Surface();
         }
 
         public void SetControlPoints(List<Vector3> points, int width, int height)
         {
-            surface.SetControlPoints(points, width, height);
+            surface = new Surface(points, width, height);
         }
 
         public void Paint(Graphics g)
@@ -97,25 +96,25 @@ namespace Projekt2
         {
             Alfa = alfa;
 
-            Updater.UpdateAngles(_alfa,_beta);
+           // Updater.UpdateAngles(_alfa,_beta);
 
         }
 
         public void SetBeta(int beta)
         {
             Beta = beta;
-            Updater.UpdateAngles(_alfa, _beta);
+           // Updater.UpdateAngles(_alfa, _beta);
         }
 
         public void SetU(int U)
         {
             this.U = U;
-            Updater.UpdatePrecision(_u, _v);
+           // Updater.UpdatePrecision(_u, _v);
         }
         public void SetV(int V)
         {
             this.V = V;
-            Updater.UpdatePrecision(_u, _v);
+           // Updater.UpdatePrecision(_u, _v);
         }
     }
 }

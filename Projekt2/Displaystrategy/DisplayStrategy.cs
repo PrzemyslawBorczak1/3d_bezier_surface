@@ -37,7 +37,8 @@ namespace Projekt2
             // TODO change backgorund
             g.Clear(Color.Black);
 
-            Updater.UpdateSurface(surface);
+            //Updater.UpdateSurface(surface);
+            surface.SetNewNet();
             foreach (var strategy in strategies)
             {
                 strategy.Draw(surface,  g);

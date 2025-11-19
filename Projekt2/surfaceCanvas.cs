@@ -54,8 +54,8 @@ namespace Projekt2
             }
 
 
-            UpdateAngles(0, 0);
-            UpdatePrecision(5, 5);
+            //UpdateAngles(0, 0);
+            //UpdatePrecision(5, 5);
             SetControlPoints(pts, 4, 4);
 
 
@@ -118,24 +118,7 @@ namespace Projekt2
             Invalidate();
         }
 
-        public void UpdateAngles(int alfa, int beta)
-        {
-            Updater.UpdateAngles(alfa, beta);
-
-            Invalidate();
-        }
-
-        public void UpdatePrecision(int U, int V)
-        {
-
-            Updater.UpdatePrecision(U, V);
-
-            Invalidate();
-        }
-
-
-
-
+       
 
         public void AddDisplayStrategy(IDisplayStrategy strategy)
         {

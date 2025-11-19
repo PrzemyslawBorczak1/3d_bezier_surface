@@ -129,9 +129,9 @@ namespace Projekt2
         #endregion
         private void SetupStage()
         {
-
-            surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
-            surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            // TODO creaet thsi setup
+            //surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
+            //surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
 
             surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
             surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
