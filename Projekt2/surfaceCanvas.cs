@@ -170,7 +170,7 @@ namespace Projekt2
             Invalidate();
         }
 
-        public void SetMap(Bitmap bitmap)
+        public void SetMap(MyBitmap bitmap)
         {
             if (surface == null)
                 return;
@@ -187,7 +187,7 @@ namespace Projekt2
             Invalidate();
         }
 
-        public void SetTexture(Bitmap bitmap)
+        public void SetTexture(MyBitmap bitmap)
         {
             if (surface == null)
                 return;

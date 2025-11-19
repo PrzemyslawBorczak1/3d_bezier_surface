@@ -235,10 +235,8 @@ namespace Projekt2
 
             var map = surface.Map;
 
-            int ix = Math.Clamp((int)(u * map.Width), 0, map.Width - 1);
-            int iy = Math.Clamp((int)(v * map.Height), 0, map.Height - 1);
-
-            var color = map.GetPixel(ix, iy);
+            
+            var color = map.GetPixel(u, v);
 
             float nx = color.R / 255f * 2f - 1f;
             float ny = color.G / 255f * 2f - 1f;
@@ -266,9 +264,7 @@ namespace Projekt2
                 return;
 
             var texture = surface.Texture;
-            int ix = Math.Clamp((int)(u * texture.Width), 0, texture.Width - 1);
-            int iy = Math.Clamp((int)(v * texture.Height), 0, texture.Height - 1);
-            var color = texture.GetPixel(ix, iy);
+            var color = texture.GetPixel(u, v);
             Vector3 IoT = new Vector3(
                 color.R / 255.0f,
                 color.G / 255.0f,

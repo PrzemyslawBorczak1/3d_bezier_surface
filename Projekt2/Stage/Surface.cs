@@ -31,11 +31,11 @@ namespace Projekt2
         public Color SurfaceColor { get; set; } = Color.Blue;
         public Color LightColor { get; set; } = Color.White;
 
-        public Bitmap? Map { get; set; } = null;
+        public MyBitmap? Map { get; set; } = null;
 
         public bool UseMap { get; set; } = false;
 
-        public Bitmap? Texture { get; set; } = null;
+        public MyBitmap? Texture { get; set; } = null;
         public bool UseTexture { get; set; } = false;
 
 

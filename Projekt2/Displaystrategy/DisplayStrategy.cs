@@ -15,7 +15,7 @@ namespace Projekt2
 
     public static class DisplayStrategy
     {
-        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { ControlNet.GetInstance() , Fill.GetInstance() };
+        static List<IDisplayStrategy> strategies = new List<IDisplayStrategy> { ControlNet.GetInstance() , DrawFiledl.GetInstance() };
 
 
 

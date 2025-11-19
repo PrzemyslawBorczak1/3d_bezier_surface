@@ -346,7 +346,7 @@
             kdBar.SmallChange = 10;
             kdBar.TabIndex = 11;
             kdBar.TickFrequency = 5;
-            kdBar.Value = 50;
+            kdBar.Value = 1;
             kdBar.ValueChanged += kdBar_ValueChanged;
             // 
             // mBar
@@ -370,7 +370,7 @@
             ksBar.Size = new Size(121, 45);
             ksBar.TabIndex = 9;
             ksBar.TickFrequency = 5;
-            ksBar.Value = 50;
+            ksBar.Value = 99;
             ksBar.ValueChanged += ksBar_ValueChanged;
             // 
             // vLabel
