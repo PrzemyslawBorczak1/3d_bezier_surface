@@ -13,7 +13,7 @@ namespace Projekt2
 {
     public class Triangle
     {
-        public static Surface? surface = null;
+        public static Stage? stage = null;
 
         List<Vertex> vertices = new List<Vertex>();
 
@@ -189,7 +189,7 @@ namespace Projekt2
         }
         private void PutPixelWithShade(MyBitmap myBitmap, int x, int y, int z)
         {
-            if (surface == null)
+            if (stage == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
@@ -225,15 +225,15 @@ namespace Projekt2
 
         private void UseNormalVectorFromMap(float u, float v, float alfa, float beta, float gamma, ref Vector3 N)
         {
-            if (surface == null)
+            if (stage == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
 
-            if (surface.Map == null || !surface.UseMap)
+            if (stage.Map == null || !stage.UseMap)
                 return;
 
-            var map = surface.Map;
+            var map = stage.Map;
 
             
             var color = map.GetPixel(u, v);
@@ -255,15 +255,15 @@ namespace Projekt2
 
         private void UseColorFromTexture(float u, float v, float alfa, float beta, float gamma, ref Vector3 Io)
         {
-            if (surface == null)
+            if (stage == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
 
-            if (!surface.UseTexture || surface.Texture == null)
+            if (!stage.UseTexture || stage.Texture == null)
                 return;
 
-            var texture = surface.Texture;
+            var texture = stage.Texture;
             var color = texture.GetPixel(u, v);
             Vector3 IoT = new Vector3(
                 color.R / 255.0f,
@@ -277,20 +277,20 @@ namespace Projekt2
         
         private Vector3 CalcEq(Vector3 N,Vector3 L , Vector3 V, Vector3 R, Vector3 Io)
         {
-            if(surface == null)
+            if(stage == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
 
 
-            float kd = surface.Kd;
-            float ks = surface.Ks;
-            int m = surface.M;
+            float kd = stage.Kd;
+            float ks = stage.Ks;
+            int m = stage.M;
 
             Vector3 Il = new(
-                surface.LightColor.R / 255.0f,
-                surface.LightColor.G / 255.0f,
-                surface.LightColor.B / 255.0f);
+                stage.LightColor.R / 255.0f,
+                stage.LightColor.G / 255.0f,
+                stage.LightColor.B / 255.0f);
 
 
 
@@ -307,7 +307,7 @@ namespace Projekt2
 
         private void Interpolate(int x, int y, out Vector3 N, out float u, out float v, out Vector3 Io )
         {
-            if(surface == null)
+            if(stage == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
             }
@@ -332,9 +332,9 @@ namespace Projekt2
             UseNormalVectorFromMap(u, v, alfa, beta, gamma, ref N);
 
             Io = new(
-                surface.SurfaceColor.R / 255.0f,
-                surface.SurfaceColor.G / 255.0f,
-                surface.SurfaceColor.B / 255.0f);
+                stage.SurfaceColor.R / 255.0f,
+                stage.SurfaceColor.G / 255.0f,
+                stage.SurfaceColor.B / 255.0f);
 
             UseColorFromTexture(u, v, alfa, beta, gamma, ref Io);
 

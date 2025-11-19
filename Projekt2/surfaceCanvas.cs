@@ -16,7 +16,7 @@ namespace Projekt2
 {
     public partial class surfaceCanvas : UserControl
     {
-        public Surface? surface;
+        public Stage stage = new Stage();
 
 
 
@@ -70,14 +70,10 @@ namespace Projekt2
 
         public void SetControlPoints(List<Vector3> points, int width, int height)
         {
-            if (surface == null)
-            {
-                surface = new Surface();
+            
+            Triangle.stage = stage;
 
-            }
-            Triangle.surface = surface;
-
-            surface.SetControlPoints(points, width, height);
+            stage.SetControlPoints(points, width, height);
         }
 
 
@@ -85,20 +81,42 @@ namespace Projekt2
         private void surfaceCanvas_Paint(object sender, PaintEventArgs e)
         {
 
-            if (surface == null)
+            if (stage == null)
             {
-                e.Graphics.DrawString("Load Points", this.Font, Brushes.Black, new PointF(10, 10));
+                e.Graphics.DrawString("Load Points", this.Font, Brushes.White, new PointF(10, 10));
                 return;
             }
 
             Graphics g = e.Graphics;
             g.ScaleTransform(1, -1);
             g.TranslateTransform(this.Width / 2, -this.Height / 2);
-            DisplayStrategy.DrawAll(surface, g);
+            // TODO
+            DisplayStrategy.DrawAll(stage.surface, g);
 
         }
 
 
+        public void SetAlfa(int alfa)
+        {
+            stage.SetAlfa(alfa);
+            Invalidate();
+        }
+        public void SetBeta(int beta)
+        {
+            stage.SetBeta(beta);
+            Invalidate();
+        }
+
+        public void SetU(int U)
+        {
+            stage.SetU(U);
+            Invalidate();
+        }
+        public void SetV(int V)
+        {
+            stage.SetV(V);
+            Invalidate();
+        }
 
         public void UpdateAngles(int alfa, int beta)
         {
@@ -116,6 +134,9 @@ namespace Projekt2
         }
 
 
+
+
+
         public void AddDisplayStrategy(IDisplayStrategy strategy)
         {
             DisplayStrategy.AddStrategy(strategy);
@@ -125,82 +146,82 @@ namespace Projekt2
         public void SetKd(float Kd)
         {
 
-            if (surface == null)
+            if (stage == null)
                 return;
-            lock (surface)
+            lock (stage)
             {
-                surface.Kd = Kd;
+                stage.Kd = Kd;
             }
             Invalidate();
         }
         public void SetKs(float Ks)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
 
-            surface.Ks = Ks;
+            stage.Ks = Ks;
 
             Invalidate();
         }
 
         public void SetM(int m)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
 
 
-            surface.M = m;
+            stage.M = m;
 
             Invalidate();
         }
 
         public void SetSurfaceColor(Color color)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
-            surface.SurfaceColor = color;
+            stage.SurfaceColor = color;
             Invalidate();
         }
 
         public void SetLightColor(Color color)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
-            surface.LightColor = color;
+            stage.LightColor = color;
             Invalidate();
         }
 
         public void SetMap(MyBitmap bitmap)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
-            surface.Map = bitmap;
+            stage.Map = bitmap;
             Invalidate();
         }
 
         public void UseMap(bool use)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
 
-            surface.UseMap = use;
+            stage.UseMap = use;
             Invalidate();
         }
 
         public void SetTexture(MyBitmap bitmap)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
 
-            surface.Texture = bitmap;
+            stage.Texture = bitmap;
             Invalidate();
         }
 
         public void UseTexture(bool use)
         {
-            if (surface == null)
+            if (stage == null)
                 return;
-            surface.UseTexture = use;
+            stage.UseTexture = use;
             Invalidate();
         }
     }

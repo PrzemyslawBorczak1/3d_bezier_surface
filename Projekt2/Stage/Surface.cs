@@ -15,8 +15,8 @@ namespace Projekt2
         public List<Vector3> ControlPoints = new();
 
 
-        public int Alfa { get; set; } = 0;
-        public int Beta { get; set; } = 0;
+        //public int Alfa { get; set; } = 0;
+        //public int Beta { get; set; } = 0;
         public List<Vector3> CalculetedPoints = new();
 
         // public List<Vector3> BezierPoints = new();
@@ -24,19 +24,19 @@ namespace Projekt2
         public List<Vertex> Vertices = new();
         public List<Triangle> Triangles = new();
 
-        public float Kd { get; set; } = .5f;
-        public float Ks { get; set; } = .5f;
-        public int M { get; set; } = 1;
+        //public float Kd { get; set; } = .5f;
+        //public float Ks { get; set; } = .5f;
+        //public int M { get; set; } = 1;
 
-        public Color SurfaceColor { get; set; } = Color.Blue;
-        public Color LightColor { get; set; } = Color.White;
+        //public Color SurfaceColor { get; set; } = Color.Blue;
+        //public Color LightColor { get; set; } = Color.White;
 
-        public MyBitmap? Map { get; set; } = null;
+        //public MyBitmap? Map { get; set; } = null;
 
-        public bool UseMap { get; set; } = false;
+        //public bool UseMap { get; set; } = false;
 
-        public MyBitmap? Texture { get; set; } = null;
-        public bool UseTexture { get; set; } = false;
+        //public MyBitmap? Texture { get; set; } = null;
+        //public bool UseTexture { get; set; } = false;
 
 
 

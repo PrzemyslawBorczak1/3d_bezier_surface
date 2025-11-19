@@ -26,26 +26,26 @@ namespace Projekt2
 
         private void alfaBar_ValueChanged(object sender, EventArgs e)
         {
-            surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
+            surfaceCanvas1.SetAlfa(alfaBar.Value);
             alfaLabel.Text = $"alfa: {alfaBar.Value}°";
 
         }
 
         private void betaBar_ValueChanged(object sender, EventArgs e)
         {
-            surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
+            surfaceCanvas1.SetBeta(betaBar.Value);
             betaLabel.Text = $"beta: {betaBar.Value}°";
         }
 
         private void precisionU_ValueChanged(object sender, EventArgs e)
         {
-            surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            surfaceCanvas1.SetU(uBar.Value);
             uLabel.Text = $"u: {uBar.Value}";
         }
 
         private void precisionV_ValueChanged(object sender, EventArgs e)
         {
-            surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            surfaceCanvas1.SetV(vBar.Value);
             vLabel.Text = $"v: {vBar.Value}";
         }
 
@@ -246,7 +246,7 @@ namespace Projekt2
 
         private void loadTextureButton_Click(object sender, EventArgs e)
         {
-            if (surfaceCanvas1.surface == null)
+            if (surfaceCanvas1.stage == null)
             {
                 MessageBox.Show(this, "Load control points first.", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -282,7 +282,7 @@ namespace Projekt2
         
         private void mapButton_Click(object sender, EventArgs e)
         {
-            if (surfaceCanvas1.surface == null)
+            if (surfaceCanvas1.stage == null)
             {
                 MessageBox.Show(this, "Load control points first.", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
