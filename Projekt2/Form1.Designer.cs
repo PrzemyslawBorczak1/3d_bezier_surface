@@ -352,10 +352,12 @@
             // mBar
             // 
             mBar.Location = new Point(7, 350);
+            mBar.Maximum = 100;
             mBar.Minimum = 1;
             mBar.Name = "mBar";
             mBar.Size = new Size(130, 45);
             mBar.TabIndex = 10;
+            mBar.TickFrequency = 10;
             mBar.Value = 1;
             mBar.ValueChanged += mBar_ValueChanged;
             // 

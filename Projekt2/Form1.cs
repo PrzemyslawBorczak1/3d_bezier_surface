@@ -218,7 +218,8 @@ namespace Projekt2
             dlg.Title = "Select a file";
             dlg.Filter = "PNG images (*.png)|*.png";
             dlg.FilterIndex = 1;
-            dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            dlg.InitialDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName;
             dlg.Multiselect = false;
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -230,7 +231,7 @@ namespace Projekt2
                     using var srcImage = Image.FromStream(fs);
 
                     var bmp = new Bitmap(srcImage);
-
+                    
                     var oldDisplayImage = textureDisplay.BackgroundImage;
                     textureDisplay.BackgroundImage = new Bitmap(bmp);
                     textureDisplay.BackgroundImageLayout = ImageLayout.Zoom;
@@ -261,7 +262,8 @@ namespace Projekt2
             dlg.Title = "Select a file";
             dlg.Filter = "PNG images (*.png)|*.png";
             dlg.FilterIndex = 1;
-            dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            dlg.InitialDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName;
             dlg.Multiselect = false;
 
             if (dlg.ShowDialog(this) == DialogResult.OK)

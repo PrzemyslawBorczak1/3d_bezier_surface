@@ -42,10 +42,10 @@ namespace Projekt2
             for (int i = 0; i < points.Count; i++)
             {
                 if(i + surface.Width < points.Count)
-                    g.DrawLine(Pens.Blue, points[i].X, points[i].Y, points[i + surface.Width].X, points[i + surface.Width].Y);
+                    g.DrawLine(Pens.Green, points[i].X, points[i].Y, points[i + surface.Width].X, points[i + surface.Width].Y);
 
                 if(i + 1 < points.Count && i % surface.Width != 3)
-                    g.DrawLine(Pens.Blue, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                    g.DrawLine(Pens.Green, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
 
 
                 // TODO change into one color

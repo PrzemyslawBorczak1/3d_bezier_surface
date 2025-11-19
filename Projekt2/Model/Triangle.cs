@@ -154,11 +154,8 @@ namespace Projekt2
         }
 
 
-        // TODO test but probaly doesnt need any changes
         private void DrawLineSolid(MyBitmap myBitmap, int x1, int x2, int y, float z1, float z2)
         {
-
-
             if (x1 > x2)
             {
                 (x1, x2) = (x2, x1);
@@ -192,7 +189,6 @@ namespace Projekt2
         }
         private void PutPixelWithShade(MyBitmap myBitmap, int x, int y, int z)
         {
-            // TODO wyliczanie tego
             if (surface == null)
             {
                 throw new InvalidOperationException("Surface is not set for Triangle");
@@ -200,89 +196,21 @@ namespace Projekt2
             
             Vector3 LightSource = new(0, 0, 500);
 
-            float kd = surface.Kd;
-            float ks = surface.Ks;
-            int m = surface.M;
+            Interpolate(x, y,
+                out Vector3 N,
+                out float u,
+                out float v,
+                out Vector3 Io);
 
-            Vector3 Il = new(
-                surface.LightColor.R / 255.0f,
-                surface.LightColor.G / 255.0f,
-                surface.LightColor.B / 255.0f);
-            Vector3 Io = new(
-                surface.SurfaceColor.R / 255.0f,
-                surface.SurfaceColor.G / 255.0f,
-                surface.SurfaceColor.B / 255.0f);
-
-
-            Func<Vector3, Vector3, Vector3, float> Area = (a, b, c) =>
-            {
-                return Math.Abs((b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X)) * 0.5f;
-            };
-
-            float totalArea = Area(vertices[0].Cord, vertices[1].Cord, vertices[2].Cord);
 
             var p = new Vector3(x, y, 0);
-            float alfa = Area(vertices[0].Cord, vertices[1].Cord, p) / totalArea;
-            float beta = Area(vertices[0].Cord, p, vertices[2].Cord) / totalArea;
-            float gamma = Area(p, vertices[1].Cord, vertices[2].Cord) / totalArea;
-
-
-            var N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal);
-            N = Vector3.Normalize(N);
-            double u = (alfa * vertices[2].U + beta * vertices[1].U + gamma * vertices[0].U);
-            double v = (alfa * vertices[2].V + beta * vertices[1].V + gamma * vertices[0].V);
-            u = Math.Clamp(u, 0f, 1f);
-            v = Math.Clamp(v, 0f, 1f);
-
-            if (surface.UseTexture && surface.Texture != null)
-            {
-                var texture = surface.Texture;
-                int ix = Math.Clamp((int)(u * texture.Width), 0, texture.Width - 1);
-                int iy = Math.Clamp((int)(v * texture.Height), 0, texture.Height - 1);
-                var color = texture.GetPixel(ix, iy);
-                Vector3 IoT = new Vector3(
-                    color.R / 255.0f,
-                    color.G / 255.0f,
-                    color.B / 255.0f);
-                Io = IoT;
-            }
-            /// TODO mayby merge those 2 ifs
-
-
-            if (surface.Map != null && surface.UseMap)
-            {
-                var map = surface.Map;
-
-                int ix = Math.Clamp((int)(u * map.Width), 0, map.Width - 1);
-                int iy = Math.Clamp((int)(v * map.Height), 0, map.Height - 1);
-
-                var color = map.GetPixel(ix, iy);
-
-                float nx = color.R / 255f * 2f - 1f;
-                float ny = color.G / 255f * 2f - 1f;
-                float nz = Math.Abs(color.B / 255f * 2f - 1f);
-
-                Vector3 NB = new Vector3(nx, ny, nz);
-
-                var Pu = (alfa * vertices[2].Pu + beta * vertices[1].Pu + gamma * vertices[0].Pu);
-                var Pv = (alfa * vertices[2].Pv + beta * vertices[1].Pv + gamma * vertices[0].Pv);
-
-                
-
-                Matrix3x3 M = new Matrix3x3(Vector3.Normalize(Pu), Vector3.Normalize(Pv), Vector3.Normalize(N));
-                N = Vector3.Normalize(M * NB);
-            }
-
-
-
             Vector3 L = Vector3.Normalize(LightSource - p);
-            float cosNL = Vector3.Dot(N, L);
-            var I = kd * Il * Io * cosNL;
-
             Vector3 V = new(0, 0, 1);
-            Vector3 R = 2 * Vector3.Dot(N, L) * (N - L);
-            float cosVR = Vector3.Dot(V, R);
-            I += ks * Il * Io * (float)Math.Pow(cosVR, m);
+            Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
+          
+
+            Vector3 I = CalcEq(N, L, V, R, Io);
+
 
             I.X = I.X < 0 ? 0 : I.X;
             I.Y = I.Y < 0 ? 0 : I.Y;
@@ -295,6 +223,126 @@ namespace Projekt2
                 ));
         }
 
+        private void UseNormalVectorFromMap(float u, float v, float alfa, float beta, float gamma, ref Vector3 N)
+        {
+            if (surface == null)
+            {
+                throw new InvalidOperationException("Surface is not set for Triangle");
+            }
+
+            if (surface.Map == null || !surface.UseMap)
+                return;
+
+            var map = surface.Map;
+
+            int ix = Math.Clamp((int)(u * map.Width), 0, map.Width - 1);
+            int iy = Math.Clamp((int)(v * map.Height), 0, map.Height - 1);
+
+            var color = map.GetPixel(ix, iy);
+
+            float nx = color.R / 255f * 2f - 1f;
+            float ny = color.G / 255f * 2f - 1f;
+            float nz = Math.Abs(color.B / 255f * 2f - 1f);
+
+            Vector3 NB = new Vector3(nx, ny, nz);
+
+            var Pu = (alfa * vertices[2].Pu + beta * vertices[1].Pu + gamma * vertices[0].Pu);
+            var Pv = (alfa * vertices[2].Pv + beta * vertices[1].Pv + gamma * vertices[0].Pv);
+
+
+
+            Matrix3x3 M = new Matrix3x3(Vector3.Normalize(Pu), Vector3.Normalize(Pv), Vector3.Normalize(N));
+            N = Vector3.Normalize(M * NB);
+        }
+
+        private void UseColorFromTexture(float u, float v, float alfa, float beta, float gamma, ref Vector3 Io)
+        {
+            if (surface == null)
+            {
+                throw new InvalidOperationException("Surface is not set for Triangle");
+            }
+
+            if (!surface.UseTexture || surface.Texture == null)
+                return;
+
+            var texture = surface.Texture;
+            int ix = Math.Clamp((int)(u * texture.Width), 0, texture.Width - 1);
+            int iy = Math.Clamp((int)(v * texture.Height), 0, texture.Height - 1);
+            var color = texture.GetPixel(ix, iy);
+            Vector3 IoT = new Vector3(
+                color.R / 255.0f,
+                color.G / 255.0f,
+                color.B / 255.0f);
+            Io = IoT;
+        }
+
+        private float CalcArea(Vector3 a, Vector3 b, Vector3 c) =>
+            (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
+        
+        private Vector3 CalcEq(Vector3 N,Vector3 L , Vector3 V, Vector3 R, Vector3 Io)
+        {
+            if(surface == null)
+            {
+                throw new InvalidOperationException("Surface is not set for Triangle");
+            }
+
+
+            float kd = surface.Kd;
+            float ks = surface.Ks;
+            int m = surface.M;
+
+            Vector3 Il = new(
+                surface.LightColor.R / 255.0f,
+                surface.LightColor.G / 255.0f,
+                surface.LightColor.B / 255.0f);
+
+
+
+            float cosNL = Vector3.Dot(N, L);
+
+            var I = kd * Il * Io * cosNL;
+
+            float cosVR = Vector3.Dot(V, R);
+
+            I += ks * Il * Io * (float)Math.Pow(cosVR, m);
+
+            return I;
+        }
+
+        private void Interpolate(int x, int y, out Vector3 N, out float u, out float v, out Vector3 Io )
+        {
+            if(surface == null)
+            {
+                throw new InvalidOperationException("Surface is not set for Triangle");
+            }
+
+            float totalArea = CalcArea(vertices[0].Cord, vertices[1].Cord, vertices[2].Cord);
+
+            var p = new Vector3(x, y, 0);
+            float alfa = CalcArea(vertices[0].Cord, vertices[1].Cord, p) / totalArea;
+            float beta = CalcArea(vertices[2].Cord, vertices[0].Cord, p) / totalArea;
+            float gamma = CalcArea(vertices[1].Cord, vertices[2].Cord, p) / totalArea;
+
+
+            N = (alfa * vertices[2].Normal + beta * vertices[1].Normal + gamma * vertices[0].Normal);
+            N = Vector3.Normalize(N);
+
+
+            u = (alfa * vertices[2].U + beta * vertices[1].U + gamma * vertices[0].U);
+            v = (alfa * vertices[2].V + beta * vertices[1].V + gamma * vertices[0].V);
+            u = Math.Clamp(u, 0f, 1f);
+            v = Math.Clamp(v, 0f, 1f);
+
+            UseNormalVectorFromMap(u, v, alfa, beta, gamma, ref N);
+
+            Io = new(
+                surface.SurfaceColor.R / 255.0f,
+                surface.SurfaceColor.G / 255.0f,
+                surface.SurfaceColor.B / 255.0f);
+
+            UseColorFromTexture(u, v, alfa, beta, gamma, ref Io);
+
+        }
 
     }
 }
