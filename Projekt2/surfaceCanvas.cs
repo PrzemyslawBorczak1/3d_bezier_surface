@@ -16,7 +16,7 @@ namespace Projekt2
 {
     public partial class surfaceCanvas : UserControl
     {
-        public Stage stage = new Stage();
+        public Stage stage = new ();
 
 
 
@@ -28,7 +28,7 @@ namespace Projekt2
 
             // TODO usunac 
 
-            var path = "C:\\Users\\przem\\Pulpit\\BezierSurfacePoints.txt";
+            var path = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName + "/Saddle.txt";
             var amount = 16;
             List<Vector3> pts = new(amount);
 
@@ -54,11 +54,7 @@ namespace Projekt2
             }
 
 
-            //UpdateAngles(0, 0);
-            //UpdatePrecision(5, 5);
             SetControlPoints(pts, 4, 4);
-
-
 
             Refresh();
 
@@ -70,7 +66,6 @@ namespace Projekt2
 
         public void SetControlPoints(List<Vector3> points, int width, int height)
         {
-            
             Triangle.stage = stage;
 
             stage.SetControlPoints(points, width, height);
@@ -90,31 +85,31 @@ namespace Projekt2
             Graphics g = e.Graphics;
             g.ScaleTransform(1, -1);
             g.TranslateTransform(this.Width / 2, -this.Height / 2);
-            // TODO
-            DisplayStrategy.DrawAll(stage.surface, g);
+            
+            stage.Paint(g);
 
         }
 
 
         public void SetAlfa(int alfa)
         {
-            stage.SetAlfa(alfa);
+            stage.Alfa = alfa;
             Invalidate();
         }
         public void SetBeta(int beta)
         {
-            stage.SetBeta(beta);
+            stage.Beta = beta;
             Invalidate();
         }
 
         public void SetU(int U)
         {
-            stage.SetU(U);
+            stage.U = U;
             Invalidate();
         }
         public void SetV(int V)
         {
-            stage.SetV(V);
+            stage.V = V;
             Invalidate();
         }
 
@@ -128,20 +123,12 @@ namespace Projekt2
 
         public void SetKd(float Kd)
         {
+            stage.Kd = Kd;
 
-            if (stage == null)
-                return;
-            lock (stage)
-            {
-                stage.Kd = Kd;
-            }
             Invalidate();
         }
         public void SetKs(float Ks)
         {
-            if (stage == null)
-                return;
-
             stage.Ks = Ks;
 
             Invalidate();
@@ -149,10 +136,6 @@ namespace Projekt2
 
         public void SetM(int m)
         {
-            if (stage == null)
-                return;
-
-
             stage.M = m;
 
             Invalidate();
@@ -160,50 +143,36 @@ namespace Projekt2
 
         public void SetSurfaceColor(Color color)
         {
-            if (stage == null)
-                return;
             stage.SurfaceColor = color;
             Invalidate();
         }
 
         public void SetLightColor(Color color)
         {
-            if (stage == null)
-                return;
             stage.LightColor = color;
             Invalidate();
         }
 
         public void SetMap(MyBitmap bitmap)
         {
-            if (stage == null)
-                return;
             stage.Map = bitmap;
             Invalidate();
         }
 
         public void UseMap(bool use)
         {
-            if (stage == null)
-                return;
-
             stage.UseMap = use;
             Invalidate();
         }
 
         public void SetTexture(MyBitmap bitmap)
         {
-            if (stage == null)
-                return;
-
             stage.Texture = bitmap;
             Invalidate();
         }
 
         public void UseTexture(bool use)
         {
-            if (stage == null)
-                return;
             stage.UseTexture = use;
             Invalidate();
         }

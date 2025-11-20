@@ -23,10 +23,10 @@ namespace Projekt2
         public List<Vector3> CalculetedPoints;
 
 
-        public List<Vertex> Vertices;
-        public List<Triangle> Triangles;
+        public Vertex[] Vertices;
+        public Triangle[] Triangles;
 
-        public Surface(List<Vector3> ControlPoints, int width, int height)
+        public Surface(List<Vector3> ControlPoints, int width, int height, int u, int v)
         {
             this.ControlPoints = ControlPoints;
             CalculetedPoints = new List<Vector3>(ControlPoints);
@@ -34,15 +34,16 @@ namespace Projekt2
             Width = width;
             Height = height;
 
-            Vertices = new List<Vertex>();
-            Triangles = new List<Triangle>();
+            U = u;
+            V = v;
 
-            SetNewNet();
+            Vertices = new Vertex[U * V];
+            Triangles = new Triangle[U * V * 2];
+
         }
 
 
 
-        // TODO mayby fsater?
         public Rectangle GetBounds()
         {
             int minX = CalculetedPoints.Min(p => (int)p.X);
@@ -79,6 +80,8 @@ namespace Projekt2
 
                 CalculetedPoints[i] = point;
             }
+
+
         }
 
         private void CreateRotationMatrices(float alfa, float beta, out Matrix2x2 rotationX, out Matrix2x2 rotationZ)
@@ -103,45 +106,49 @@ namespace Projekt2
         }
 
 
-
-
-
         public void SetPrecision(int u, int v)
         {
             U = u;
             V = v;
-            SetNewNet();
         }
 
 
 
 
 
-        // TODO parallel??
-        public void SetNewNet()
+
+
+
+
+
+
+
+        public void MakeRenderReady()
         {
 
-            var points = CalculetedPoints;
-            if (points.Count != 16)
+            if (CalculetedPoints.Count != 16)
             {
-
-                // throw new Exception("Control points count must be 16");
-                points = ControlPoints;
+                CalculetedPoints = new List<Vector3>(ControlPoints);
             }
 
-            Vertices.Clear();
+            Vertices = new Vertex[(U + 1) * (V + 1)];
 
             float u = (float)1 / U;
             float v = (float)1 / V;
+            float uStep = 1f / U;
+            float vStep = 1f / V;
 
-            for (int i = 0; i <= U; i++)
+
+            Parallel.For(0, U + 1, i =>
             {
-                for (int j = 0; j <= V; j++)
+                float ui = uStep * i;
+                int rowBase = i * (V + 1);
+                for (int j = 0; j < V + 1; j++)
                 {
-                    var p = CreateVertex(u * i, v * j);
-                    Vertices.Add(p);
+                    Vertices[rowBase + j] = CreateVertex(ui, vStep * j);
                 }
-            }
+            });
+
 
             SetTriangles();
         }
@@ -164,9 +171,9 @@ namespace Projekt2
             int n = Width - 1;
             int m = Height - 1;
 
-            Vector3 position = new Vector3();
-            Vector3 Pu = new Vector3();
-            Vector3 Pv = new Vector3();
+            Vector3 position = new ();
+            Vector3 Pu = new ();
+            Vector3 Pv = new ();
 
             for (int i = 0; i <= n; i++)
             {
@@ -221,28 +228,24 @@ namespace Projekt2
 
         private  void SetTriangles()
         {
-            List<Vertex> vertices = Vertices;
-
-            List<Triangle> triangels = Triangles;
-            triangels.Clear();
+            Triangles = new Triangle[U * V * 2];
 
 
-            for (int i = 0; i < U; i++)
+            Parallel.For(0, U, i =>
             {
-                for (int j = 0; j < V ; j++)
+                for (int j = 0; j < V; j++)
                 {
                     int topLeft = i * (V + 1) + j;
                     int topRight = topLeft + 1;
                     int bottomLeft = topLeft + (V + 1);
                     int bottomRight = bottomLeft + 1;
 
-                    triangels.Add(new Triangle(vertices[topLeft], vertices[topRight], vertices[bottomLeft]));
-                    triangels.Add(new Triangle(vertices[topRight], vertices[bottomRight], vertices[bottomLeft]));
-                }
-            }
+                    Triangles[(i * V + j) * 2] = new Triangle(Vertices[topLeft], Vertices[topRight], Vertices[bottomLeft]);
+                    Triangles[(i * V + j) * 2 + 1] = new Triangle(Vertices[topRight], Vertices[bottomRight], Vertices[bottomLeft]);
 
-            Vertices = vertices;
-            Triangles = triangels;
+                }
+            });
+            
 
         }
     }

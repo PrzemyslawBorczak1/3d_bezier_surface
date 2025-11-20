@@ -8,6 +8,7 @@ namespace Projekt2
 {
     public class Mesh : IDisplayStrategy
     {
+        public StrategyType Type => StrategyType.Mesh;
 
         static Mesh? instance = null; 
         private Mesh()

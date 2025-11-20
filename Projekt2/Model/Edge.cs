@@ -28,12 +28,8 @@ namespace Projekt2
             End = end;
 
             if(Start.Cord.Y > End.Cord.Y)
-            {
-                var tmp = Start;
-                Start = End;
-                End = tmp;
+                (Start , End) = (End, Start);
 
-            }
 
             Ymin = (int)Start.Cord.Y;
             Ymax = (int)End.Cord.Y;

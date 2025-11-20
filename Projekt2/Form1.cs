@@ -105,11 +105,11 @@ namespace Projekt2
         {
             if (fillBox.Checked)
             {
-                DisplayStrategy.AddStrategy(DrawFiledl.GetInstance());
+                DisplayStrategy.AddStrategy(DrawFilled.GetInstance());
             }
             else
             {
-                DisplayStrategy.RemoveStrategy(DrawFiledl.GetInstance());
+                DisplayStrategy.RemoveStrategy(DrawFilled.GetInstance());
 
             }
 
@@ -129,13 +129,19 @@ namespace Projekt2
         #endregion
         private void SetupStage()
         {
-            // TODO creaet thsi setup
-            //surfaceCanvas1.UpdateAngles(alfaBar.Value, betaBar.Value);
-            //surfaceCanvas1.UpdatePrecision(uBar.Value, vBar.Value);
+            
+            surfaceCanvas1.SetAlfa(alfaBar.Value);
+            surfaceCanvas1.SetBeta(betaBar.Value);
+            surfaceCanvas1.SetU(uBar.Value);
+            surfaceCanvas1.SetV(vBar.Value);
 
             surfaceCanvas1.SetKd((float)kdBar.Value / kdBar.Maximum);
             surfaceCanvas1.SetKs((float)ksBar.Value / ksBar.Maximum);
             surfaceCanvas1.SetM(mBar.Value);
+
+            surfaceCanvas1.UseMap(useMapButton.Checked);
+            surfaceCanvas1.UseTexture(useTextureButton.Checked);
+
 
             surfaceCanvas1.Refresh();
         }

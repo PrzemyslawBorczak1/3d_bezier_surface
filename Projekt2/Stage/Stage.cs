@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-
-using System.Numerics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Projekt2
 {
@@ -13,7 +13,7 @@ namespace Projekt2
 
         public Surface? surface;
 
-        public List<Light> Lights { get; set; } = new List<Light>();
+        public List<Light> Lights { get; set; } = new ();
 
         private int _alfa = 0;
         public int Alfa { 
@@ -24,7 +24,7 @@ namespace Projekt2
                     return;
 
                 _alfa = value;
-                surface.RotateControlPoints(_alfa, _beta);
+                surface?.RotateControlPoints(_alfa, _beta);
             }
         }
         private int _beta = 0;
@@ -34,7 +34,8 @@ namespace Projekt2
                 if (_beta == value)
                     return;
                 _beta = value;
-                surface.RotateControlPoints(_alfa, _beta);
+
+                    surface?.RotateControlPoints(_alfa, _beta);
             }
         }
 
@@ -45,7 +46,8 @@ namespace Projekt2
                 if(_u == value)
                     return;
                 _u = value;
-                surface.SetPrecision(_u, _v);
+
+                    surface?.SetPrecision(_u, _v);
             }
         }
         public int _v = 5;
@@ -56,7 +58,8 @@ namespace Projekt2
                 if(_v == value)
                     return;
                 _v = value;
-                surface.SetPrecision(_u, _v);
+
+                    surface?.SetPrecision(_u, _v);
             }
         }
 
@@ -73,48 +76,28 @@ namespace Projekt2
         public MyBitmap? Texture { get; set; } = null;
         public bool UseTexture { get; set; } = false;
 
-        public Stage()
-        {
-        }
-
         public void SetControlPoints(List<Vector3> points, int width, int height)
         {
-            surface = new Surface(points, width, height);
+            surface = new Surface(points, width, height, U, V);
         }
 
         public void Paint(Graphics g)
         {
-            // TODO change (not give surface)
+            if (surface == null)
+            {
+                g.ScaleTransform(1f, -1f);
+                g.DrawString("Load Points", SystemFonts.DefaultFont, Brushes.White, new PointF(10, 10));
+
+                return;
+            }
+
+
+            surface.MakeRenderReady();
             DisplayStrategy.DrawAll(surface, g);
 
         }
 
 
 
-
-        public void SetAlfa(int alfa)
-        {
-            Alfa = alfa;
-
-           // Updater.UpdateAngles(_alfa,_beta);
-
-        }
-
-        public void SetBeta(int beta)
-        {
-            Beta = beta;
-           // Updater.UpdateAngles(_alfa, _beta);
-        }
-
-        public void SetU(int U)
-        {
-            this.U = U;
-           // Updater.UpdatePrecision(_u, _v);
-        }
-        public void SetV(int V)
-        {
-            this.V = V;
-           // Updater.UpdatePrecision(_u, _v);
-        }
     }
 }

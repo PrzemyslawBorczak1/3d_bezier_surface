@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace Projekt2
 {
-    public class DrawFiledl : IDisplayStrategy
+    public class DrawFilled : IDisplayStrategy
     {
-        static DrawFiledl? instance = null;
-        private DrawFiledl() { }
-        public static DrawFiledl GetInstance()
+        public StrategyType Type => StrategyType.DrawFilled;
+        static DrawFilled? instance = null;
+        private DrawFilled() { }
+        public static DrawFilled GetInstance()
         {
             if (instance == null)
             {
-                instance = new DrawFiledl();
+                instance = new DrawFilled();
             }
             return instance;
         }

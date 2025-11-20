@@ -11,7 +11,7 @@ namespace Projekt2
 {
     public class ControlNet : IDisplayStrategy
     {
-        
+        public StrategyType Type => StrategyType.ControlNet;
 
         static ControlNet? instance = null;
         private ControlNet() { }
