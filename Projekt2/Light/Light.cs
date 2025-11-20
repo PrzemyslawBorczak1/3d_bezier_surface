@@ -32,26 +32,10 @@ namespace Projekt2
 
         public void ChangeFromLambert() { }
 
-
-        public Light()
+        public void TimerTick(float val)
         {
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); timer.Interval = 100;
-            timer.Tick += (s, e) =>
-            {
-                TimerTick();
-            };
-            timer.Start();
-        }
+            alpha = (float)(val * 2 * Math.PI);
 
-
-        public void TimerTick()
-        {
-            alpha += (float)Math.PI / 16;
-            alpha %= (float)(2 * Math.PI);
-
-
-
-            //Position = new Vector3(this.Position.X + 1, this.Position.Y, this.Position.Z);
         }
     }
 }

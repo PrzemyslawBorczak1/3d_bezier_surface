@@ -65,13 +65,7 @@ namespace Projekt2
 
             InitializeComponent();
 
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 100;
-            timer.Tick += (s, e) =>
-            {
-                Invalidate();
-            };
-            timer.Start();
+            
 
 
         }
@@ -190,7 +184,11 @@ namespace Projekt2
             Invalidate();
         }
         
-
+        public void LightTick(float val)
+        {
+            stage.LightTick(val);
+            Invalidate();
+        }
     
     
     }

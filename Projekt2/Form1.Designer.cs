@@ -292,13 +292,17 @@
             animationBox.TabIndex = 17;
             animationBox.Text = "animate";
             animationBox.UseVisualStyleBackColor = true;
+            animationBox.CheckedChanged += animationBox_CheckedChanged;
             // 
             // lightAnimationBar
             // 
             lightAnimationBar.Location = new Point(12, 416);
+            lightAnimationBar.Maximum = 256;
             lightAnimationBar.Name = "lightAnimationBar";
             lightAnimationBar.Size = new Size(196, 45);
             lightAnimationBar.TabIndex = 16;
+            lightAnimationBar.TickFrequency = 16;
+            lightAnimationBar.ValueChanged += lightAnimationBar_ValueChanged;
             // 
             // label7
             // 

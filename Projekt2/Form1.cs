@@ -14,11 +14,19 @@ namespace Projekt2
         const int height = 4;
         const int amount = width * height;
 
+        System.Windows.Forms.Timer timer;
 
         public Form1()
         {
             InitializeComponent();
             SetupStage();
+
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 100;
+            timer.Tick += (s, e) =>
+            {
+                lightAnimationBar.Value = (lightAnimationBar.Value + 5) % lightAnimationBar.Maximum;
+            };
         }
 
 
@@ -129,7 +137,7 @@ namespace Projekt2
         #endregion
         private void SetupStage()
         {
-            
+
             surfaceCanvas1.SetAlfa(alfaBar.Value);
             surfaceCanvas1.SetBeta(betaBar.Value);
             surfaceCanvas1.SetU(uBar.Value);
@@ -160,7 +168,7 @@ namespace Projekt2
 
             return null;
         }
-            
+
         private string? GetTxtFile()
         {
             using var dlg = new OpenFileDialog();
@@ -285,7 +293,7 @@ namespace Projekt2
                 MessageBox.Show(this, $"Unable to load image: {ex.Message}", "Load map", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         private void mapButton_Click(object sender, EventArgs e)
         {
             if (surfaceCanvas1.stage == null)
@@ -322,5 +330,22 @@ namespace Projekt2
 
         }
 
+        private void animationBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (animationBox.Checked)
+            {
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+            }
+
+        }
+
+        private void lightAnimationBar_ValueChanged(object sender, EventArgs e)
+        {
+            surfaceCanvas1.LightTick((float)lightAnimationBar.Value / lightAnimationBar.Maximum);
+        }
     }
 }

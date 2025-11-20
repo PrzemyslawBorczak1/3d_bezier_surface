@@ -77,7 +77,6 @@ namespace Projekt2
         public void SetControlPoints(List<Vector3> points, int width, int height)
         {
             surface = new Surface(points, width, height, U, V);
-            surface = new WigglySurface(surface);
         }
 
         public void Paint(Graphics g)
@@ -104,5 +103,12 @@ namespace Projekt2
 
         public List<Light> GetLights() => Lights;
 
+        public void LightTick(float val)
+        {
+            foreach (var light in Lights)
+            {
+                light.TimerTick(val);
+            }
+        }
     }
 }
