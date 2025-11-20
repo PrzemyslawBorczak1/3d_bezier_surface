@@ -27,6 +27,7 @@ namespace Projekt2
             this.UpdateStyles();
 
             // TODO usunac 
+            // bardzo wazne z tym program nie dziala
 
             var path = "C:\\Users\\przem\\Pulpit\\BezierSurfacePoints.txt";
 
@@ -64,7 +65,8 @@ namespace Projekt2
 
             InitializeComponent();
 
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); timer.Interval = 100;
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = 100;
             timer.Tick += (s, e) =>
             {
                 Invalidate();
