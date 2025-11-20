@@ -23,6 +23,8 @@ namespace Projekt2
         public List<Vector3> CalculetedPoints;
 
 
+        public Color SurfaceColor { get; set; } = Color.Green;
+
         public Vertex[] Vertices;
         public Triangle[] Triangles;
 

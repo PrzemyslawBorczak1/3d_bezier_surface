@@ -28,7 +28,8 @@ namespace Projekt2
 
             // TODO usunac 
 
-            var path = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName + "/Saddle.txt";
+            var path = "C:\\Users\\przem\\Pulpit\\BezierSurfacePoints.txt";
+
             var amount = 16;
             List<Vector3> pts = new(amount);
 
@@ -62,6 +63,15 @@ namespace Projekt2
             // TODO dotad
 
             InitializeComponent();
+
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); timer.Interval = 100;
+            timer.Tick += (s, e) =>
+            {
+                Invalidate();
+            };
+            timer.Start();
+
+
         }
 
         public void SetControlPoints(List<Vector3> points, int width, int height)
@@ -147,9 +157,10 @@ namespace Projekt2
             Invalidate();
         }
 
+        // TODO change light
         public void SetLightColor(Color color)
         {
-            stage.LightColor = color;
+            stage.SetLightColor(color);
             Invalidate();
         }
 
@@ -176,5 +187,9 @@ namespace Projekt2
             stage.UseTexture = use;
             Invalidate();
         }
+        
+
+    
+    
     }
 }

@@ -137,22 +137,22 @@
             // radioButton4
             // 
             radioButton4.AutoSize = true;
-            radioButton4.Checked = true;
             radioButton4.Location = new Point(126, 509);
             radioButton4.Name = "radioButton4";
             radioButton4.Size = new Size(64, 19);
             radioButton4.TabIndex = 31;
-            radioButton4.TabStop = true;
             radioButton4.Text = "not use";
             radioButton4.UseVisualStyleBackColor = true;
             // 
             // useMapButton
             // 
             useMapButton.AutoSize = true;
+            useMapButton.Checked = true;
             useMapButton.Location = new Point(126, 484);
             useMapButton.Name = "useMapButton";
             useMapButton.Size = new Size(70, 19);
             useMapButton.TabIndex = 30;
+            useMapButton.TabStop = true;
             useMapButton.Text = "use map";
             useMapButton.UseVisualStyleBackColor = true;
             useMapButton.CheckedChanged += useMapButton_CheckedChanged;
@@ -170,10 +170,12 @@
             // useTextureButton
             // 
             useTextureButton.AutoSize = true;
+            useTextureButton.Checked = true;
             useTextureButton.Location = new Point(6, 13);
             useTextureButton.Name = "useTextureButton";
             useTextureButton.Size = new Size(63, 19);
             useTextureButton.TabIndex = 24;
+            useTextureButton.TabStop = true;
             useTextureButton.Text = "Texture";
             useTextureButton.UseVisualStyleBackColor = true;
             useTextureButton.CheckedChanged += useTextureButton_CheckedChanged;
@@ -181,12 +183,10 @@
             // radioButton2
             // 
             radioButton2.AutoSize = true;
-            radioButton2.Checked = true;
             radioButton2.Location = new Point(75, 13);
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(51, 19);
             radioButton2.TabIndex = 25;
-            radioButton2.TabStop = true;
             radioButton2.Text = "Solid";
             radioButton2.UseVisualStyleBackColor = true;
             // 

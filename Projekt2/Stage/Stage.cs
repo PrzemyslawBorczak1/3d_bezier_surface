@@ -13,7 +13,7 @@ namespace Projekt2
 
         public Surface? surface;
 
-        public List<Light> Lights { get; set; } = new ();
+        public List<Light> Lights { get; set; } = new () { new() };
 
         private int _alfa = 0;
         public int Alfa { 
@@ -69,7 +69,6 @@ namespace Projekt2
         public int M { get; set; } = 1;
 
         public Color SurfaceColor { get; set; } = Color.Green;
-        public Color LightColor { get; set; } = Color.White;
 
         public MyBitmap? Map { get; set; } = null;
         public bool UseMap { get; set; } = false;
@@ -97,7 +96,13 @@ namespace Projekt2
 
         }
 
+        public void SetLightColor(Color color)
+        {
+            Lights[0].LightColor = color;
+        }
 
+
+        public List<Light> GetLights() => Lights;
 
     }
 }
