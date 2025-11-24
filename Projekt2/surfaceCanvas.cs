@@ -16,8 +16,10 @@ namespace Projekt2
 {
     public partial class surfaceCanvas : UserControl
     {
-        public Stage stage = new ();
+        public Stage stage = new();
 
+
+        System.Windows.Forms.Timer refreshTimer;
 
 
         public surfaceCanvas()
@@ -26,46 +28,19 @@ namespace Projekt2
             this.DoubleBuffered = true;
             this.UpdateStyles();
 
-            // TODO usunac 
-            // bardzo wazne z tym program nie dziala
-
-            var path = "C:\\Users\\przem\\Pulpit\\BezierSurfacePoints.txt";
-
-            var amount = 16;
-            List<Vector3> pts = new(amount);
-
-            var lines = File.ReadAllLines(path);
-            if (lines.Length != amount) throw new InvalidDataException("Plik musi zawierać 16 linii.");
-
-            for (int i = 0; i < amount; i++)
+            refreshTimer = new System.Windows.Forms.Timer();
+            refreshTimer.Interval = 100;
+            refreshTimer.Tick += (s, e) =>
             {
-                var line = lines[i].Trim();
-                if (string.IsNullOrEmpty(line))
-                    throw new InvalidDataException($"Pusta linia: {i}");
-
-                var parts = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length != 3)
-                    throw new InvalidDataException($"Linia {i + 1} nie ma 3 wartości.");
-
-                var x = float.Parse(parts[0], CultureInfo.InvariantCulture);
-                var y = float.Parse(parts[1], CultureInfo.InvariantCulture);
-                var z = float.Parse(parts[2], CultureInfo.InvariantCulture);
+                Invalidate();
+            };
+            refreshTimer.Start();
 
 
-                pts.Add(new Vector3(x, y, z));
-            }
-
-
-            SetControlPoints(pts, 4, 4);
-
-            Refresh();
-
-
-            // TODO dotad
 
             InitializeComponent();
 
-            
+
 
 
         }
@@ -91,7 +66,7 @@ namespace Projekt2
             Graphics g = e.Graphics;
             g.ScaleTransform(1, -1);
             g.TranslateTransform(this.Width / 2, -this.Height / 2);
-            
+
             stage.Paint(g);
 
         }
@@ -119,7 +94,7 @@ namespace Projekt2
             Invalidate();
         }
 
-       
+
 
         public void AddDisplayStrategy(IDisplayStrategy strategy)
         {
@@ -183,13 +158,20 @@ namespace Projekt2
             stage.UseTexture = use;
             Invalidate();
         }
-        
+
         public void LightTick(float val)
         {
             stage.LightTick(val);
-            Invalidate();
         }
-    
-    
+
+        public void SetMovingSurface(bool moving)
+        {
+            stage.SetMovingSurface(moving);
+        }
+
+        public void SetSpotlight(bool spotlight)
+        {
+            stage.SetSpotlight(spotlight);
+        }
     }
 }

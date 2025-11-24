@@ -62,6 +62,10 @@
             alfaLabel = new Label();
             loadButton = new Button();
             alfaBar = new TrackBar();
+            groupBox2 = new GroupBox();
+            groupBox3 = new GroupBox();
+            reflecotrBox = new CheckBox();
+            movingSurfaceBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -75,6 +79,8 @@
             ((System.ComponentModel.ISupportInitialize)uBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)betaBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alfaBar).BeginInit();
+            groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
@@ -90,6 +96,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = SystemColors.WindowFrame;
+            splitContainer1.Panel2.Controls.Add(groupBox3);
+            splitContainer1.Panel2.Controls.Add(groupBox2);
             splitContainer1.Panel2.Controls.Add(radioButton4);
             splitContainer1.Panel2.Controls.Add(useMapButton);
             splitContainer1.Panel2.Controls.Add(groupBox1);
@@ -471,6 +479,46 @@
             alfaBar.Value = 2;
             alfaBar.ValueChanged += alfaBar_ValueChanged;
             // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(reflecotrBox);
+            groupBox2.Location = new Point(159, 265);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(138, 47);
+            groupBox2.TabIndex = 33;
+            groupBox2.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(movingSurfaceBox);
+            groupBox3.Location = new Point(159, 318);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(138, 42);
+            groupBox3.TabIndex = 34;
+            groupBox3.TabStop = false;
+            // 
+            // reflecotrBox
+            // 
+            reflecotrBox.AutoSize = true;
+            reflecotrBox.Location = new Point(6, 18);
+            reflecotrBox.Name = "reflecotrBox";
+            reflecotrBox.Size = new Size(103, 19);
+            reflecotrBox.TabIndex = 0;
+            reflecotrBox.Text = "Reflector Light";
+            reflecotrBox.UseVisualStyleBackColor = true;
+            reflecotrBox.CheckedChanged += reflecotrBox_CheckedChanged;
+            // 
+            // movingSurfaceBox
+            // 
+            movingSurfaceBox.AutoSize = true;
+            movingSurfaceBox.Location = new Point(6, 16);
+            movingSurfaceBox.Name = "movingSurfaceBox";
+            movingSurfaceBox.Size = new Size(109, 19);
+            movingSurfaceBox.TabIndex = 0;
+            movingSurfaceBox.Text = "Moving Surface";
+            movingSurfaceBox.UseVisualStyleBackColor = true;
+            movingSurfaceBox.CheckedChanged += movingSurfaceBox_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -495,6 +543,10 @@
             ((System.ComponentModel.ISupportInitialize)uBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)betaBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)alfaBar).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -534,5 +586,9 @@
         private RadioButton radioButton4;
         private RadioButton useMapButton;
         private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private CheckBox movingSurfaceBox;
+        private CheckBox reflecotrBox;
     }
 }

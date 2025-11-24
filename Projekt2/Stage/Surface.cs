@@ -44,6 +44,9 @@ namespace Projekt2
 
         }
 
+        public Surface(Surface other) : this(other.ControlPoints, other.Width, other.Height, other.U, other.V)
+        {
+        }
 
 
         public Rectangle GetBounds()

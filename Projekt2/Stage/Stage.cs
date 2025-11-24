@@ -12,10 +12,11 @@ namespace Projekt2
 
         public Surface? surface;
 
-        public List<Light> Lights { get; set; } = new () { new() };
+        public List<Light> Lights { get; set; } = new() { new() };
 
         private int _alfa = 0;
-        public int Alfa { 
+        public int Alfa
+        {
             get => _alfa;
             set
             {
@@ -27,38 +28,43 @@ namespace Projekt2
             }
         }
         private int _beta = 0;
-        public int Beta {
+        public int Beta
+        {
             get => _beta;
-            set {
+            set
+            {
                 if (_beta == value)
                     return;
                 _beta = value;
 
-                    surface?.RotateControlPoints(_alfa, _beta);
+                surface?.RotateControlPoints(_alfa, _beta);
             }
         }
 
         private int _u = 5;
-        public int U { 
+        public int U
+        {
             get => _u;
-            set {
-                if(_u == value)
+            set
+            {
+                if (_u == value)
                     return;
                 _u = value;
 
-                    surface?.SetPrecision(_u, _v);
+                surface?.SetPrecision(_u, _v);
             }
         }
         public int _v = 5;
         public int V
         {
             get => _v;
-            set  {
-                if(_v == value)
+            set
+            {
+                if (_v == value)
                     return;
                 _v = value;
 
-                    surface?.SetPrecision(_u, _v);
+                surface?.SetPrecision(_u, _v);
             }
         }
 
@@ -110,6 +116,30 @@ namespace Projekt2
             {
                 light.TimerTick(val);
             }
+        }
+
+
+        public void SetMovingSurface(bool moving)
+        {
+            if (surface == null)
+                return;
+
+            if (moving)
+                surface = new WigglySurface(surface);
+            else
+                surface = new Surface(surface);
+        }
+
+
+
+        public void SetSpotlight(bool spotlight)
+        {
+            Light l = Lights[0];
+            Lights.Clear();
+            if (!spotlight)
+                Lights.Add(new Light(l));
+            else
+                Lights.Add(new SpotLight(l));
         }
     }
 }

@@ -347,5 +347,15 @@ namespace Projekt2
         {
             surfaceCanvas1.LightTick((float)lightAnimationBar.Value / lightAnimationBar.Maximum);
         }
+
+        private void reflecotrBox_CheckedChanged(object sender, EventArgs e)
+        {
+            surfaceCanvas1.SetSpotlight(reflecotrBox.Checked);
+        }
+
+        private void movingSurfaceBox_CheckedChanged(object sender, EventArgs e)
+        {
+            surfaceCanvas1.SetMovingSurface(movingSurfaceBox.Checked);
+        }
     }
 }

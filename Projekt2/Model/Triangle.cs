@@ -205,16 +205,37 @@ namespace Projekt2
             var p = new Vector3(x, y, 0);
             Vector3 V = new(0, 0, 1);
 
-            Vector3 I = new(0, 0, 0); 
+            Vector3 I = new(0, 0, 0);
             foreach (var light in stage.GetLights())
             {
                 Vector3 LightSource = light.Position;
                 Vector3 L = Vector3.Normalize(LightSource - p);
                 Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
 
+                Vector3 Il = new(
+                    light.LightColor.R / 255.0f,
+                    light.LightColor.G / 255.0f,
+                    light.LightColor.B / 255.0f);
 
-                I += CalcDiffuse(N, L, V, R,Io, light);
-                I += CalcSpectlar(N, L, V, R, Io, light);
+                if (light is SpotLight spotLight)
+                {
+                    Vector3 axis = Vector3.Normalize(light.Position);      // assume axis points from origin to light
+                    Vector3 toPoint = -L;   
+
+                    float cosTheta = Vector3.Dot(axis, toPoint);
+                    cosTheta *= -1;
+
+                    cosTheta = MathF.Max(cosTheta, 0);
+
+                    float spotEffect = MathF.Pow(cosTheta, stage.M); 
+
+                    Il *= spotEffect;
+                    Vector3.Normalize(Il);
+                }
+
+
+                I += light.CalcDiffuse(N, L, V, R, Io, Il, light, stage);
+                I += light.CalcSpectlar(N, L, V, R, Io, Il, light, stage);
                 I += light.ChangeFromLambert();
             }
 
@@ -281,59 +302,6 @@ namespace Projekt2
         private float CalcArea(Vector3 a, Vector3 b, Vector3 c) =>
             (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
         
-        private Vector3 CalcDiffuse(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io, Light light)
-        {
-            if (stage == null)
-            {
-                throw new InvalidOperationException("Surface is not set for Triangle");
-            }
-
-
-            float kd = stage.Kd;
-            float ks = stage.Ks;
-            int m = stage.M;
-
-            Vector3 Il = new(
-                light.LightColor.R / 255.0f,
-                light.LightColor.G / 255.0f,
-                light.LightColor.B / 255.0f);
-
-
-
-            float cosNL = Vector3.Dot(N, L);
-
-            var I = kd * Il * Io * cosNL;
-
-            return I;
-        }
-
-        private Vector3 CalcSpectlar(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io, Light light)
-        {
-            if (stage == null)
-            {
-                throw new InvalidOperationException("Surface is not set for Triangle");
-            }
-
-
-            float kd = stage.Kd;
-            float ks = stage.Ks;
-            int m = stage.M;
-
-            float cosVR = Vector3.Dot(V, R);
-
-
-            Vector3 Il = new(
-                light.LightColor.R / 255.0f,
-                light.LightColor.G / 255.0f,
-                light.LightColor.B / 255.0f);
-
-            var I =  ks * Il * Io * (float)Math.Pow(cosVR, m);
-
-            return I;
-
-        }
-
-
         private void Interpolate(int x, int y, out Vector3 N, out float u, out float v, out Vector3 Io )
         {
             if(stage == null)
