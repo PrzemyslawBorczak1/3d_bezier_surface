@@ -30,7 +30,9 @@ namespace Projekt2
         private float radius = 1000;
 
 
-        public void ChangeFromLambert() { }
+        public Vector3 ChangeFromLambert() {
+            return new Vector3(0, 0, 0);
+        }
 
         public void TimerTick(float val)
         {

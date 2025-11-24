@@ -18,7 +18,6 @@ namespace Projekt2
             timer.Interval = 100;
             timer.Tick += (s, e) =>
             {
-
                 double t = (DateTime.UtcNow - _start).TotalSeconds;
 
                 for (int i = 0; i < ControlPoints.Count; i++)
