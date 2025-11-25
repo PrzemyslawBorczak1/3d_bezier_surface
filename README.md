@@ -21,29 +21,34 @@ It also includes animation of a moving light source and interactive controls for
 
 ---
 
+![My App Screenshot](Files/FotoApp.png)
+
+---
+
 ## Control Point File Format
 
-The engine loads a plain text file with **exactly 16 lines**, each containing 3 floating-point numbers:
+All example files for control points, textures, and normal maps are located in the `Files` folder of this repository.
 
 ---
 
 ## Example Control Point File
 
 ```txt
-0.0 0.0 0.0
-1.0 0.5 0.0
-2.0 0.3 0.0
-3.0 0.0 0.0
-0.0 0.0 1.0
-1.0 0.5 1.0
-2.0 0.3 1.0
-3.0 0.0 1.0
-0.0 0.0 2.0
-1.0 0.5 2.0
-2.0 0.3 2.0
-3.0 0.0 2.0
-0.0 0.0 3.0
-1.0 0.5 3.0
-2.0 0.3 3.0
-3.0 0.0 3.0
+-160.0 -160.0 160.0
+-55.0  -160.0  90.0
+55.0   -160.0  90.0
+160.0  -160.0 160.0
+-170.0 -70.0 -120.0
+-40.0  -70.0 -260.0
+60.0   -70.0 -260.0
+170.0  -70.0 -120.0
+-150.0 30.0  -100.0
+-45.0  30.0  -220.0
+45.0   30.0  -220.0
+150.0  30.0  -100.0
+-140.0 170.0 160.0
+-50.0  170.0  90.0
+60.0   170.0  90.0
+170.0  170.0 160.0
+
 
