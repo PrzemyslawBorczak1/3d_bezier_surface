@@ -40,10 +40,6 @@ namespace Projekt2
         public float radius = 100;
 
 
-        public Vector3 ChangeFromLambert() {
-            return new Vector3(0, 0, 0);
-        }
-
         public void TimerTick(float val)
         {
             alpha = (float)(val * 2 * Math.PI);
@@ -52,7 +48,7 @@ namespace Projekt2
 
 
 
-        public Vector3 CalcDiffuse(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io,Vector3 Il, Light light, Stage stage)
+        public virtual Vector3 CalcDiffuse(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io,Vector3 Il, Light light, Stage stage)
         {
             if (stage == null)
             {
@@ -73,7 +69,7 @@ namespace Projekt2
             return I;
         }
 
-        public Vector3 CalcSpectlar(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io,Vector3 Il, Light light, Stage stage)
+        public virtual Vector3 CalcSpectlar(Vector3 N, Vector3 L, Vector3 V, Vector3 R, Vector3 Io,Vector3 Il, Light light, Stage stage)
         {
             if (stage == null)
             {

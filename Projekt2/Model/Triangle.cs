@@ -217,26 +217,9 @@ namespace Projekt2
                     light.LightColor.G / 255.0f,
                     light.LightColor.B / 255.0f);
 
-                if (light is SpotLight spotLight)
-                {
-                    Vector3 axis = Vector3.Normalize(light.Position);      // assume axis points from origin to light
-                    Vector3 toPoint = -L;   
-
-                    float cosTheta = Vector3.Dot(axis, toPoint);
-                    cosTheta *= -1;
-
-                    cosTheta = MathF.Max(cosTheta, 0);
-
-                    float spotEffect = MathF.Pow(cosTheta, stage.M); 
-
-                    Il *= spotEffect;
-                    Vector3.Normalize(Il);
-                }
-
-
+               
                 I += light.CalcDiffuse(N, L, V, R, Io, Il, light, stage);
                 I += light.CalcSpectlar(N, L, V, R, Io, Il, light, stage);
-                I += light.ChangeFromLambert();
             }
 
             I.X = I.X < 0 ? 0 : I.X;
